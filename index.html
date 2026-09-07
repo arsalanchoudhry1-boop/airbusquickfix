@@ -213,6 +213,8 @@
             padding: 1.1rem;
             cursor: pointer;
             transition: background-color 0.15s ease, transform 0.1s ease;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .card:active {
@@ -227,6 +229,8 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 0.2rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .card-title {
@@ -234,6 +238,9 @@
             font-weight: 500;
             color: var(--text-primary);
             line-height: 1.3;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
         }
 
         .card-count {
@@ -567,6 +574,26 @@
             <div id="mel-detail-container"></div>
         </div>
 
+        <!-- Part Numbers: list of ATA chapters within the Part Numbers index -->
+        <div id="pn-home-view" class="view-section">
+            <h2 class="section-header">Part Numbers</h2>
+            <div class="section-sub">Part number index by ATA chapter, with CEO / NEO variants noted where they differ.</div>
+            <div id="pn-chapters-grid" class="grid"></div>
+        </div>
+
+        <!-- Part Numbers: list of parts within a chosen ATA chapter -->
+        <div id="pn-items-view" class="view-section">
+            <h2 id="pn-items-heading" class="section-header"></h2>
+            <div class="section-sub">Select a part to see its full reference:</div>
+            <div id="pn-items-list"></div>
+        </div>
+
+        <!-- Part Numbers: single part detail -->
+        <div id="pn-detail-view" class="view-section">
+            <h2 id="pn-detail-heading" class="section-header" style="font-family: ui-monospace, monospace;"></h2>
+            <div id="pn-detail-container"></div>
+        </div>
+
         <div id="issues-view" class="view-section">
             <h2 id="issues-heading" class="section-header"></h2>
             <div id="issues-sub" class="section-sub">Select a pilot maintenance message or fault displayed on screen:</div>
@@ -598,6 +625,12 @@
                 title: "Minimum Equipment List",
                 images: [],
                 isMEL: true,
+                issues: []
+            },
+            "PN": {
+                title: "Part Numbers",
+                images: [],
+                isPN: true,
                 issues: []
             },
             "ATA 05": {
@@ -2379,6 +2412,13 @@
                     { num: "52-53-04A", name: "UNLOCK FUNCTION OF THE COCKPIT DOOR SW", notes: "Refer to current MEL Item 52-53-04A in the controlled manual for dispatch conditions, limitations, and procedures." },
                 ]
             },
+            "53": {
+                title: "Fuselage",
+                items: [
+                    { desc: "GROUND POWER HOOK", pn: "D5311045120000", neo: "" },
+                    { desc: "GROUND POWER BRACKET", pn: "D5311045020000", neo: "" }
+                ]
+            },
             "56": {
                 title: "Windows",
                 items: [
@@ -2533,10 +2573,1175 @@
             },
         };
 
+        const partNumberDatabase = {
+            "11": {
+                title: "Placards and Markings",
+                items: [
+                    { desc: "CARGO DOOR OPEN/CLOSE", pn: "B21-1100", neo: "" },
+                    { desc: "CREW NOTICES", pn: "PCBM10948DM", neo: "" },
+                    { desc: "DOOR LOCKED IND", pn: "PCBM14838DM", neo: "" },
+                    { desc: "DRAIN MAST HOT", pn: "D1121025420000", neo: "" },
+                    { desc: "DIVIDER SIDE PIECE PLACARD", pn: "PCBM-14883DM", neo: "" },
+                    { desc: "FAP PRA NUMBER", pn: "PCBM13278", neo: "" },
+                    { desc: "FLT DECK (U/C DOWNLOCK STWG) DOOR", pn: "D1131005520000", neo: "" },
+                    { desc: "ELT DK LIFE VEST", pn: "BC2232", neo: "" },
+                    { desc: "LAVATORY", pn: "A2528131550700", neo: "" },
+                    { desc: "MEGAPHONE", pn: "PCBM14891DM", neo: "" },
+                    { desc: "OVEN DR CAUTION", pn: "PCBM14049DM", neo: "" },
+                    { desc: "OVERHEAD LOCKER (CASE STWG)", pn: "PCBM13025DM", neo: "" },
+                    { desc: "OXYGEN BOTTLE", pn: "PCBM14933DM", neo: "" },
+                    { desc: "PARK BRK LEVER", pn: "002082-02", neo: "" },
+                    { desc: "SMOKEHOOD", pn: "PCBM14932DM", neo: "" },
+                    { desc: "SWIVEL SEAT \"LIFT\"", pn: "PCBM16973DM:BA4300Z", neo: "" },
+                    { desc: "THERAPEUTIC OXYGEN", pn: "PCBM10720DM", neo: "" },
+                    { desc: "TOILET SEAT DECAL", pn: "PCBM15015DM", neo: "" },
+                    { desc: "TOILET BIN DOOR PLACARD", pn: "F2527708953800", neo: "" },
+                    { desc: "WARDROBE (DOOR MUST BE LATCHED)", pn: "PCBM14925DM", neo: "" },
+                    { desc: "WHEELCHAIR ONBOARD", pn: "PCBM25228DM", neo: "" },
+                    { desc: "SEP DOOR PLACARDS", pn: "PCBM14910DM", neo: "" },
+                    { desc: "FIRE EXT", pn: "PCBM14916DM", neo: "" },
+                    { desc: "TORCH", pn: "PCBM14915DM", neo: "" },
+                    { desc: "MANUAL RELEASE TOOL", pn: "РСВМ14914DM", neo: "" },
+                    { desc: "FIRE GLOVES", pn: "PCBM15020DM", neo: "" },
+                    { desc: "HIGH VIS JACKET", pn: "РСВМ24255DM", neo: "" }
+                ]
+            },
+            "21": {
+                title: "Air Conditioning",
+                items: [
+                    { desc: "ACM", pn: "1263A0000-03", neo: "" },
+                    { desc: "ADIRU/AEVC VENT CAP", pn: "E0424A3 /E", neo: "" },
+                    { desc: "AVEC COMPUTER", pn: "87292325V04", neo: "" },
+                    { desc: "BYPASS VALVE", pn: "758A0000-02:D9893", neo: "" },
+                    { desc: "SKIN EX INLT BYPS VL", pn: "V2T152B / V2T152D", neo: "" },
+                    { desc: "PACKING", pn: "NSA8603-258", neo: "" },
+                    { desc: "SKIN OUTLT VENT VLV", pn: "VFT300B00", neo: "" },
+                    { desc: "PACKING", pn: "NSA8205-178", neo: "" },
+                    { desc: "SKIN TEMP SNSR", pn: "87232324V00", neo: "" },
+                    { desc: "CABIN PX CNTLR", pn: "9022-15702-10", neo: "" },
+                    { desc: "OUTFLOW VLV ASSY", pn: "20790-01AA", neo: "" },
+                    { desc: "OUTFLOW VLV ASSY (NEW)", pn: "20790-02AC", neo: "" },
+                    { desc: "PACK TEMP CONTLR", pn: "759D0000-02", neo: "" },
+                    { desc: "ZONE TEMP CONTLR", pn: "775D0000-01", neo: "" },
+                    { desc: "PACK FLOW CTL VLV", pn: "1303A0000-02", neo: "" },
+                    { desc: "LT BODY ASSY", pn: "E0423-01 OR E0423-01E", neo: "" },
+                    { desc: "FIL FOR ABOVE", pn: "E0029-01", neo: "" },
+                    { desc: "CARGO VENT CONTROLLER", pn: "600615-00-502", neo: "" },
+                    { desc: "CARGO VENT CONTROLLER", pn: "600615-00-503", neo: "" },
+                    { desc: "PACKING (UPA)", pn: "AS3582-232:96906", neo: "" },
+                    { desc: "SEAL (UPA)", pn: "ABS1040-40:FAPE3", neo: "" },
+                    { desc: "VENTILATION BLOWER P/BSW", pn: "E0415C3LM003", neo: "" },
+                    { desc: "VENTILATION EXTRACT P/BSW", pn: "E0415C3LM003", neo: "" },
+                    { desc: "CABIN FANS P/BSW", pn: "E0415C3LM009", neo: "" },
+                    { desc: "AFT ISOL VLV P/BSW", pn: "E0415C3LM002", neo: "" },
+                    { desc: "CAB PX/DITCHING P/BSW", pn: "E0415C3LM006", neo: "" },
+                    { desc: "MODE SEL P/BSW", pn: "E0415C3LM004", neo: "" },
+                    { desc: "PACK 1 P/BSW", pn: "E0415C3LM002", neo: "" },
+                    { desc: "PACK 2 P/BSW", pn: "E0415C3LM002", neo: "" },
+                    { desc: "HOT AIR P/BSW", pn: "E0415C3LM002", neo: "" }
+                ]
+            },
+            "22": {
+                title: "Auto Flight",
+                items: [
+                    { desc: "MCDU", pn: "4077880-980", neo: "" },
+                    { desc: "MCDU", pn: "4077880-981", neo: "" },
+                    { desc: "FMGC", pn: "B546CCM0104", neo: "" },
+                    { desc: "FMGC", pn: "B546CCM0105", neo: "" },
+                    { desc: "FAC", pn: "B397BAM0519", neo: "" },
+                    { desc: "FCU", pn: "C12850AA01", neo: "" },
+                    { desc: "YAW DAMPER ACT", pn: "SC4700-5", neo: "" },
+                    { desc: "RUDDER TRIM IND", pn: "195PN01Y01", neo: "" }
+                ]
+            },
+            "23": {
+                title: "Communications",
+                items: [
+                    { desc: "STATIC WICK", pn: "2-16SC1 OR 2-14SC1", neo: "" },
+                    { desc: "DISC", pn: "921900-01-5172-5", neo: "" },
+                    { desc: "CADDY", pn: "921111", neo: "" },
+                    { desc: "ACARS MU (ATIMS)", pn: "LA2T0G20503B050", neo: "" },
+                    { desc: "MONITOR VIDEO R/H", pn: "617-6231-002 or 617-6231-012", neo: "" },
+                    { desc: "MONITOR VIDEO L/H", pn: "617-6231-001 or 617-6231-011", neo: "" },
+                    { desc: "VIDEO PREV SCN PSCU", pn: "743-0315-004", neo: "" },
+                    { desc: "PA SWITCH ACP", pn: "3586AF04", neo: "" },
+                    { desc: "CABIN HANDSET", pn: "89-01-07122", neo: "" },
+                    { desc: "CRADLE", pn: "98-01-07902", neo: "" },
+                    { desc: "VHF XCVR", pn: "EVR750-03-0100A", neo: "" },
+                    { desc: "JACK PLUG SERV INT (A/C BODY)", pn: "2J1864", neo: "" },
+                    { desc: "CVR", pn: "980-6022-001", neo: "" },
+                    { desc: "JACK PLUG SERV INT (ENGINE)", pn: "2J1761A", neo: "" },
+                    { desc: "DEU A", pn: "Z030H0005110", neo: "" },
+                    { desc: "DEU B", pn: "Z040H000720A", neo: "" },
+                    { desc: "AMU AUDIO MGMT UNIT", pn: "AMU2790CB06", neo: "" },
+                    { desc: "VHF AERIAL", pn: "2403-89", neo: "" },
+                    { desc: "CIDS DIRECTOR", pn: "Z010H0005119", neo: "" },
+                    { desc: "FWD ATTND PNL", pn: "Z130H0181110", neo: "" },
+                    { desc: "CIDS PROG TEST PNL", pn: "Z020H0001112", neo: "" },
+                    { desc: "COCKPIT CALL P/B SW", pn: "E0064-78A4-0", neo: "" },
+                    { desc: "PTT SW", pn: "D2731009900000", neo: "" },
+                    { desc: "SPEAKER SW POTMTR", pn: "D0003000001400", neo: "" },
+                    { desc: "SPEAKER FLT DK", pn: "35-0D5-1003", neo: "" },
+                    { desc: "TAPE REPRODUCER", pn: "980-0800-123", neo: "" },
+                    { desc: "VTR VIDEO PLAYER", pn: "743-0293-001", neo: "" },
+                    { desc: "VTR VIDEO PLAYER", pn: "743-0304-001", neo: "" },
+                    { desc: "VIDEO BRT CTL TOOL", pn: "322-1104-002", neo: "" },
+                    { desc: "RDG LT ASSY", pn: "9EL408200-06", neo: "" },
+                    { desc: "RDG LT LENS", pn: "9EL408202-06", neo: "" },
+                    { desc: "HEADSET (ANR, NO BATTS REQ)", pn: "HMEC25CAP", neo: "" },
+                    { desc: "HEADSET (GIB AIR)", pn: "025-230-325", neo: "" },
+                    { desc: "CIDS AFT ATTN PNL DR2L", pn: "Z120H0085112", neo: "" },
+                    { desc: "EVAC WARN MECH CALL HORN", pn: "D0003004300000", neo: "" },
+                    { desc: "CONTACTS FOR HORN", pn: "NSA937910EA1600", neo: "" },
+                    { desc: "COCKPIT CALL CAP", pn: "E0424B3 /E", neo: "" },
+                    { desc: "LT BODY ASSY", pn: "E0423-01 OR E0423-01E", neo: "" },
+                    { desc: "FIL FOR ABOVE", pn: "E0029-01", neo: "" },
+                    { desc: "SEB", pn: "700-2323-002", neo: "" },
+                    { desc: "STATIC WICK (O/B BOAT FAIRING)", pn: "2-16SC1 OR 2-14SC1", neo: "" }
+                ]
+            },
+            "24": {
+                title: "Electrical Power",
+                items: [
+                    { desc: "IDG", pn: "766219", neo: "" },
+                    { desc: "SEAL", pn: "MS28778-12", neo: "" },
+                    { desc: "SEAL", pn: "MS28778-10", neo: "" },
+                    { desc: "SEAL", pn: "M83248-1-222", neo: "" },
+                    { desc: "SEAL", pn: "M83248-1-259", neo: "" },
+                    { desc: "IDG GASKET", pn: "747825", neo: "" },
+                    { desc: "STATIC INV", pn: "4188-00", neo: "" },
+                    { desc: "BAT SWITCH LT", pn: "E0415C3LM002", neo: "" },
+                    { desc: "GCU", pn: "740120C/767584G", neo: "" },
+                    { desc: "TR", pn: "Y005-2", neo: "" },
+                    { desc: "ESS TR", pn: "Y005-2/3", neo: "" },
+                    { desc: "EMG GEN", pn: "520913", neo: "" },
+                    { desc: "GPCU", pn: "740121B", neo: "" },
+                    { desc: "BCL", pn: "35-0L5-1005-08", neo: "" },
+                    { desc: "MAIN & APU BATTERY", pn: "2758", neo: "" },
+                    { desc: "ENG GENERATOR", pn: "766219/772292", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-908", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-906", neo: "" },
+                    { desc: "PACKING", pn: "MS28778-10", neo: "" },
+                    { desc: "PACKING", pn: "MS28778-12", neo: "" },
+                    { desc: "GCU (ALT)", pn: "740120B / 767584G", neo: "" },
+                    { desc: "TR", pn: "Y005-2/Y005-3", neo: "" },
+                    { desc: "ESS TR", pn: "Y005-2/Y005-3", neo: "" },
+                    { desc: "BCL", pn: "35-0L5-1004-07", neo: "" },
+                    { desc: "ELEC CNL PNL LT PLATE", pn: "002097-01", neo: "" },
+                    { desc: "PLASTIC SCREWS", pn: "ASNA2083BG2-10", neo: "" },
+                    { desc: "NOT IN USE CAP", pn: "E0424W3 /E", neo: "" },
+                    { desc: "AVAIL CAP", pn: "E0424A3 /E", neo: "" },
+                    { desc: "LT BODY ASSY", pn: "E0423-01 OR E0423-01E", neo: "" },
+                    { desc: "FIL FOR ABOVE", pn: "E0029-01", neo: "" },
+                    { desc: "APU GEN", pn: "5910047", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-260", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-115", neo: "" },
+                    { desc: "PACKING", pn: "96715216", neo: "" },
+                    { desc: "TERMNL COVER", pn: "5908681", neo: "" }
+                ]
+            },
+            "25": {
+                title: "Equipment/Furnishings",
+                items: [
+                    { desc: "ACARS PAPER ROLL", pn: "8050917-0010SFS", neo: "" },
+                    { desc: "AISLE CARPET KIT A320", pn: "10162208-3", neo: "" },
+                    { desc: "ATT CALL LIGHT", pn: "0L6839BPE", neo: "" },
+                    { desc: "BEV MAKER", pn: "64771-001-001", neo: "4650-2821-00" },
+                    { desc: "BEV MAKER (ALT)", pn: "3510-0034-01", neo: "" },
+                    { desc: "BEV MAKER LED GREEN", pn: "AC1706", neo: "" },
+                    { desc: "BEV MAKER LED YELLOW", pn: "AC1705", neo: "" },
+                    { desc: "BEV MAKER LED RED", pn: "AC1704", neo: "" },
+                    { desc: "BRIDGE TABLE ASS 20\" R1", pn: "1020311-005EZ06", neo: "" },
+                    { desc: "BRIDGE TABLE ASS 20\"", pn: "1027481-007EZ06", neo: "" },
+                    { desc: "BRIDGE TABLE ASS L/H DOUBLE SEAT (NARROW)", pn: "1027482-001EZ06", neo: "" },
+                    { desc: "BRIDGE TABLE BOLTS", pn: "AN4-6A", neo: "" },
+                    { desc: "BRIDGE TABLE BUSHING", pn: "MS17795-24", neo: "" },
+                    { desc: "BRIDGE TABLE WASHERS", pn: "NAS1149C0416R", neo: "" },
+                    { desc: "BRIDGE TABLE NUTS", pn: "52NKTE048", neo: "" },
+                    { desc: "BRIDGE TABLE LEAF", pn: "1020296-007E706", neo: "" },
+                    { desc: "BRIDGE TABLE STOWAGE LATCH", pn: "R4-99-397BLS", neo: "" },
+                    { desc: "BRIDGE TABLE LATCH", pn: "1027390-041EZ06", neo: "" },
+                    { desc: "BRIDGE TABLE LATCH SCREWS", pn: "MS24693-S50", neo: "" },
+                    { desc: "BRIDGE TABLE LOCATING FOOT/STUD", pn: "1022300-133", neo: "" },
+                    { desc: "BRIDGE TABLE LATCH SHROUD L/H", pn: "1027390-317DLA", neo: "" },
+                    { desc: "BRIDGE TABLE LATCH SHROUD R/H", pn: "1027390-316DLA", neo: "" },
+                    { desc: "BRIDGE TABLE LATCH SHROUD SCREWS", pn: "MS27039C0806", neo: "" },
+                    { desc: "BULKHEAD COVERING", pn: "70F1D0233VA12N1", neo: "" },
+                    { desc: "CABIN SECURE INDICATOR", pn: "1-105382-1", neo: "" },
+                    { desc: "CABIN SECURE INDICATOR KIT", pn: "PCK674", neo: "" },
+                    { desc: "[CABIN WINDOW SCRATCH PANEL (with tabs)", pn: "D2529185820000", neo: "" },
+                    { desc: "CANISTER REMOVEL STRAPS", pn: "7A3000A01G15", neo: "" },
+                    { desc: "CANISTER REMOVEL PULLEY 401/402", pn: "225512-3", neo: "" },
+                    { desc: "CARGO PL JOYSTICK", pn: "D9259002000400", neo: "" },
+                    { desc: "CARGO PDU", pn: "2944T100-1", neo: "" },
+                    { desc: "CARGO X/Y LATCH", pn: "2842T100-3", neo: "" },
+                    { desc: "CARGO DOOR SILL LATCH SPRING", pn: "A2577118920200", neo: "" },
+                    { desc: "CARPET", pn: "1-301898-44", neo: "" },
+                    { desc: "CARPET", pn: "10162208-8", neo: "" },
+                    { desc: "CARPET", pn: "1-300264-31", neo: "" },
+                    { desc: "CARPET", pn: "1-301715-22", neo: "" },
+                    { desc: "CARPET REPAIR", pn: "10186759-9", neo: "" },
+                    { desc: "CARPET KIT AISLE", pn: "10162208-3", neo: "" },
+                    { desc: "CARPET KIT FLT DK", pn: "10198421-1", neo: "" },
+                    { desc: "CENTRE CONSOLE FILLER PANEL", pn: "F0003041801500", neo: "" },
+                    { desc: "CHILLER AIR", pn: "236-10", neo: "" },
+                    { desc: "CIDS/ATTN PL (DR2L)", pn: "Z120H0085112", neo: "" },
+                    { desc: "COCKPIT DOOR MAGNET ASSY", pn: "A2527535800000:FAPE3", neo: "" },
+                    { desc: "COINDOT", pn: "AFG2535DA8-57", neo: "" },
+                    { desc: "COINDOT", pn: "AFG3040DA8-88", neo: "" },
+                    { desc: "CONTAINER LATCH (CARGO XZ)", pn: "2842T100-1", neo: "" },
+                    { desc: "COVE LIGHTING PNL R/H", pn: "D25271338062009", neo: "" },
+                    { desc: "CREW DRILL CARD HOLDER", pn: "2-102043-1", neo: "" },
+                    { desc: "CREW SEAT (SINGLE) L/H", pn: "WA93BYU3YS11055", neo: "" },
+                    { desc: "CREW SEAT (SINGLE) R/H", pn: "WA25BYU3YS01054", neo: "" },
+                    { desc: "CREW SEAT (SWIVEL)", pn: "RL27FYF3YS10054", neo: "" },
+                    { desc: "CREW SEAT ( SWIVEL SEAT ) Y SER", pn: "2130-15CH00FAD1", neo: "" },
+                    { desc: "CREW SEAT R/DOUBLE (Y SER)", pn: "2131-75NKOOGAD1", neo: "" },
+                    { desc: "CREW SEAT R/DOUBLE SEAT CUSHION (Y SER )", pn: "2E7013-1", neo: "" },
+                    { desc: "CREW SEAT CVR", pn: "DHP14220", neo: "" },
+                    { desc: "CREW SEAT CVR (Y SER)", pn: "2Е7020-11APX", neo: "" },
+                    { desc: "CREW SEAT SPRING L/H", pn: "150500-07", neo: "" },
+                    { desc: "CREW SEAT SPRING R/H", pn: "150500-08", neo: "" },
+                    { desc: "CREW SEAT HARNESS D1L", pn: "4115-1-091-8110", neo: "" },
+                    { desc: "CREW SEAT HARNESS D1L", pn: "2100018-03-104", neo: "" },
+                    { desc: "CREW SEAT HARNESS (REAR SINGLE)", pn: "4005-1-011-9006", neo: "" },
+                    { desc: "CREW SEAT HARNESS (SWIVEL SEAT)", pn: "4115-1-131-8110", neo: "" },
+                    { desc: "CREW SEAT HEADREST CVR", pn: "151725-01C06", neo: "" },
+                    { desc: "CREW SEAT REAR SWIVEL (SPRING)", pn: "125-500-07", neo: "" },
+                    { desc: "CREW SEAT REAR SWIVEL (MID CUSTION)", pn: "153720-01", neo: "" },
+                    { desc: "CREW SEAT REAR SWIVEL (SIDE HEADREST CUSTION)", pn: "395E03-054", neo: "" },
+                    { desc: "CREW SEAT REAR SWIVEL (MID CUSTION COVER)", pn: "DA 23-6 PEPPERDUST", neo: "" },
+                    { desc: "CREW SEAT R/SWIVEL (HOLD DOWN BOLT)", pn: "153200-02", neo: "" },
+                    { desc: "CREW SEAT R/SWIVEL (HOLD DOWN BOLT NUT)", pn: "AN316-4R", neo: "" },
+                    { desc: "CREW SEAT R/SWIVEL SIDEWALL HEADREST FOAM", pn: "PAL141665", neo: "" },
+                    { desc: "CREW SEAT R/SWIVEL HEADREST CVR", pn: "DHP141664", neo: "" },
+                    { desc: "CURTAIN A321 Midhaul Fwd & Aft", pn: "10145532-4", neo: "" },
+                    { desc: "CURTAIN TIE-BACK STUD (BLKHD)", pn: "DAN146-3", neo: "" },
+                    { desc: "CURTAIN END STOPS (PLASTIC)", pn: "878052", neo: "" },
+                    { desc: "CURTAIN (AISLE)", pn: "10151520-10", neo: "" },
+                    { desc: "CURTAIN (GALLEY)", pn: "10151520-9", neo: "" },
+                    { desc: "DEFIB", pn: "500SYSBA10", neo: "" },
+                    { desc: "DEFIB / M5 KIT DRAW SLIDER", pn: "JEC54-2345", neo: "" },
+                    { desc: "DEMO LIFEJACKET", pn: "A4414A", neo: "P01202-201D" },
+                    { desc: "DEMO OXY MASK", pn: "289-1002", neo: "289-1001" },
+                    { desc: "DEMO SEAT BELT", pn: "501310-405-2251", neo: "2225-6-011-2251" },
+                    { desc: "DEMO STOWAGE BAG", pn: "2-50438-4", neo: "2-50438-4" },
+                    { desc: "DIVIDER KNOB KNURLED", pn: "ABD33-043-1", neo: "" },
+                    { desc: "DIVIDER (FLAT RAIL)", pn: "97-05-179-1 OR ABD33-064-1", neo: "" },
+                    { desc: "DIVIDER (ROUND RAIL)", pn: "ABD33-359-2A", neo: "" },
+                    { desc: "DIVIDER PADDEL (L/H)", pn: "97-05-125-7", neo: "ABD33-354-2A" },
+                    { desc: "DIVIDER PADDEL (R/H)", pn: "97-05-125-8", neo: "ABD33-354-2A" },
+                    { desc: "DIVIDER PADDEL (R/H) LOCKING Y SER", pn: "ABD33-231-2A", neo: "" },
+                    { desc: "DIVIDER ROPE (MID HAUL, M6)", pn: "ACIR002621-137", neo: "" },
+                    { desc: "DIVIDER RAIL", pn: "ABD33-079-1", neo: "" },
+                    { desc: "DIVIDER CURTAIN (CTR)", pn: "10151520-13", neo: "" },
+                    { desc: "DIVIDER CURTAIN (L/H)", pn: "10151520-11", neo: "" },
+                    { desc: "DIVIDER CURTAIN (R/H)", pn: "10151520-12", neo: "" },
+                    { desc: "DIVIDER END STOP", pn: "ABD33-242-1", neo: "" },
+                    { desc: "DIVIDER CURTAIN HOOKS", pn: "4-55601-1", neo: "" },
+                    { desc: "DIVIDER CURTAIN STOPS", pn: "97-05-6007", neo: "" },
+                    { desc: "DIVIDER CURTAIN TIE BACK (REFURB)", pn: "6194F3106B0103", neo: "" },
+                    { desc: "DIVIDER TIEBACK STUD", pn: "00550-00CCO", neo: "" },
+                    { desc: "DIVIDER TIEBACK STUD SCREW", pn: "MS24693C50", neo: "" },
+                    { desc: "DIVIDER CURTAIN TIE BACK (ASSY)", pn: "10153265-2", neo: "" },
+                    { desc: "DOOR ASSIST HANDLE CAP", pn: "A2527576120400ATS", neo: "A2527576120800:FAPE3" },
+                    { desc: "DOOR BUSSELL VIEWING WINDOW", pn: "B15216-3", neo: "" },
+                    { desc: "DOOR SAFETY STRAP", pn: "504529-409", neo: "" },
+                    { desc: "DOOR 1 R TRIM DAMAGE PAINT", pn: "346-65-7671", neo: "" },
+                    { desc: "DOOR SLIDE PIN RED STREAMER", pn: "D52110801000", neo: "" },
+                    { desc: "DRILL CARD HOLDER", pn: "2-102043-1", neo: "" },
+                    { desc: "ELEC PLUG AT REAR OF OVEN", pn: "CBC-6-33-1", neo: "" },
+                    { desc: "ELT PORTABLE", pn: "", neo: "S1823502-05" },
+                    { desc: "ELT RUNNER HINGE ABOVE 1DEF", pn: "A5210-21P:FAPE3", neo: "A5210-21P:FAPE3" },
+                    { desc: "EMERG EXIT WINDOW BLIND ASSY", pn: "D2528976000800", neo: "" },
+                    { desc: "EMERG TORCH", pn: "P2-07-0003-001", neo: "" },
+                    { desc: "EMERG TORCH (NEO)", pn: "P2-07-0001-214", neo: "" },
+                    { desc: "EMERG TORCH HOLDER", pn: "P207-07-00004-201", neo: "" },
+                    { desc: "EMERG TORCH BAT", pn: "Р4-01-0021", neo: "" },
+                    { desc: "ENTRY MAT", pn: "MAT76X76BB", neo: "" },
+                    { desc: "ENTRY MAT ADHESIVE TAPE", pn: "3M9731X75MM", neo: "" },
+                    { desc: "EXTENSION SEAT BELTS", pn: "501848-417-1849", neo: "2225-5-011-2269" },
+                    { desc: "EXTENSION SEAT BELTS ( MID HAUL BLUE )", pn: "1028-2-111-8020", neo: "" },
+                    { desc: "EXTENSION SEAT BELT BAG/HOLDER", pn: "2-50438-5", neo: "A256-70815-014-00" },
+                    { desc: "EYEWASH", pn: "STERIPACK", neo: "" },
+                    { desc: "EXIT SIGN (VERTICAL)", pn: "BC5-0393-105", neo: "" },
+                    { desc: "FAN COWL LOCKING KEY", pn: "HA2273-1", neo: "" },
+                    { desc: "FLOORBOARD INSERT ( CARPET TREAD PLATE)", pn: "SL607-3-6S", neo: "" },
+                    { desc: "FLT/DK DR LOCK MECH", pn: "5699DR", neo: "" },
+                    { desc: "FLT/DK DR LOCK MECH TRIM COVER TOP", pn: "72515-2", neo: "" },
+                    { desc: "BOTTOM", pn: "72515-1", neo: "" },
+                    { desc: "SCREW", pn: "MS51957-25", neo: "" },
+                    { desc: "CAP", pn: "32594-1", neo: "" },
+                    { desc: "WASHER", pn: "32595-1", neo: "" },
+                    { desc: "FASTENERS", pn: "32593-1", neo: "" },
+                    { desc: "FLT DECK ASHTRAY", pn: "ASNA2708-01", neo: "" },
+                    { desc: "FLT DECK BIN", pn: "D2511060700200", neo: "" },
+                    { desc: "FLT/DK BIN STOP", pn: "D9251041700000", neo: "" },
+                    { desc: "FLT/DK CARPET KIT", pn: "10198421-1", neo: "" },
+                    { desc: "FLT/DK DOOR MAGNET MODIFIED (SMALL)", pn: "A2527535800000", neo: "" },
+                    { desc: "FLT/DK DOOR MAGNET MODIFIED (LARGE)", pn: "D2527488200200", neo: "" },
+                    { desc: "FLT DECK U/C DOWNLOCK STWG DOOR", pn: "D2511206800000", neo: "" },
+                    { desc: "FLT DECK U/C DOWNLOCK (NLG)", pn: "", neo: "" },
+                    { desc: "FLT DECK U/C DOWNLOCK (MLG)", pn: "DRT68923", neo: "" },
+                    { desc: "FIRE AXE", pn: "EIS76014-10000", neo: "" },
+                    { desc: "FIRE AXE CVR", pn: "NSA7000-02", neo: "" },
+                    { desc: "FIRE EXTINGUISHER (BCF)", pn: "BA51015-5", neo: "P3APP003010C", qty: "X5", ipc: "26-24-01-30Q" },
+                    { desc: "FIRE EXTINGUISHER (WATER/GLYCO)", pn: "BA61016WG3", neo: "BA61016WG-5" },
+                    { desc: "FIRE EXT BRACKET", pn: "BA50102-3", neo: "" },
+                    { desc: "FIRE GLOVES", pn: "HRGLOVES", neo: "FKK8-35KL" },
+                    { desc: "FOOTREST DAMPER", pn: "ASNA2151-02", neo: "" },
+                    { desc: "FWD ATTENDANCE PIL", pn: "Z130H0192110:BAW434A", neo: "" },
+                    { desc: "FWD GAL AFT CURTAIN", pn: "1-300602-3", neo: "" },
+                    { desc: "FWD GAL CURTAIN", pn: "1-300602-2", neo: "" },
+                    { desc: "GALLEY BIN BOTTOM STOP", pn: "D9251041700000", neo: "", ipc: "31-13-01-13" },
+                    { desc: "GALLEY BIN DOOR LATCH", pn: "AR138-5-2", neo: "215538-3" },
+                    { desc: "GALLEY BIN DOOR LATCH (BACKPLATE)", pn: "7FD8540A04M01", neo: "" },
+                    { desc: "GALLEY BIN DOOR SAFETY LATCH (BACKPLATE)", pn: "JMS2008-20", neo: "" },
+                    { desc: "GALLEY BIN DOOR SAFETY LATCH (UPPER)", pn: "JMS2001-46", neo: "" },
+                    { desc: "GALLEY BIN FLAP ASSY", pn: "7FJ4200A03G55:5065", neo: "", ipc: "25-33-44-01M" },
+                    { desc: "GALLEY COUNTER LT COVER", pn: "7YE3600A19G03", neo: "" },
+                    { desc: "GALLEY CURTAIN (FWD & AFT )", pn: "10151520-10:KB480", neo: "" },
+                    { desc: "GALLEY CURTAIN (FWD & AFT ) STOPS", pn: "2520M1M00650101:FAPE3", neo: "878052" },
+                    { desc: "GALLEY CURTAIN TIE-BACK", pn: "D2527410319600", neo: "" },
+                    { desc: "GALLEY CURTAIN TIE-BACK ASSY", pn: "10153265-1", neo: "" },
+                    { desc: "GALLEY CURTAIN TIE-BACK STUD", pn: "00550-00CCO", neo: "" },
+                    { desc: "GALLEY FAUCET", pn: "7W3000A01G01", neo: "" },
+                    { desc: "GALLEY FILTERS (MONTHLY)", pn: "JMS2403-1 X 12", neo: "" },
+                    { desc: "GALLEY FOOT STEP", pn: "7FA7030A13G03", neo: "" },
+                    { desc: "GALLEY LATCH RETAINER-TURN", pn: "JMS2002-74-1", neo: "" },
+                    { desc: "GALLEY PAPERWORK CLIP", pn: "M1138G349", neo: "220538-3" },
+                    { desc: "GALLEY SLIDE EXTRACTOR (411-412-414-415)", pn: "225512-131", neo: "225512-131" },
+                    { desc: "GALLEY SLIDE EXTRACTOR (401-402)", pn: "225512-3", neo: "225512-3" },
+                    { desc: "GALLEY SLIDE EXTRACTOR (UXC / UXG) ( 412-414)", pn: "225512-17", neo: "" },
+                    { desc: "GALLEY STOWAGE DOOR HANDLE", pn: "0-136-000600000 / JMS2010-35", neo: "" },
+                    { desc: "GALLEY STOWAGE RETRIEVER STRAP", pn: "7FA3000A01G15", neo: "" },
+                    { desc: "GROUND PWR BRACKET", pn: "D5311045020000", neo: "" },
+                    { desc: "GROUND POWER HOOK", pn: "D5311045120000", neo: "" },
+                    { desc: "HAT HOOK", pn: "D2511033000000", neo: "" },
+                    { desc: "HOIST POINT PATCHES", pn: "ASNA2879A050", neo: "" },
+                    { desc: "HOSE PSU PANELS", pn: "ABS0305KA2-11", neo: "" },
+                    { desc: "HOOVER VACUUM SOCKET", pn: "E0354-301", neo: "" },
+                    { desc: "HOOVER SOCKET FLAP", pn: "D2528660901500", neo: "", ipc: "25-23-45-01D" },
+                    { desc: "HINGE", pn: "DAN236-01", neo: "" },
+                    { desc: "SCREW", pn: "NAS1102-04-6", neo: "" },
+                    { desc: "NUT", pn: "NAS679A04", neo: "" },
+                    { desc: "WASHER", pn: "NAS1149DN432K", neo: "" },
+                    { desc: "IPAD MOUNT", pn: "RAMB224-1TAB3FR01ALA1KR", neo: "" },
+                    { desc: "IPAD MOUNT SUCTION MOUNTS", pn: "RAP224-1", neo: "" },
+                    { desc: "JIMMEY BAR", pn: "PAB2479", neo: "" },
+                    { desc: "LIFE COT", pn: "A346600A00", neo: "A346600A00" },
+                    { desc: "LIFE JACKET (ADULT)", pn: "00002122*", neo: "P01202-201" },
+                    { desc: "LIFE JACKET (CREW)", pn: "00002123*", neo: "P01202-201C" },
+                    { desc: "LIFE JACKET (INFANT)", pn: "00002260*", neo: "P0640-101" },
+                    { desc: "LIFE JACKET ( DEMO )", pn: "A4414A", neo: "P01202-201D" },
+                    { desc: "LIFE JACKET POUCH", pn: "LVS88-5-4-29", neo: "A256-70815-008-00" },
+                    { desc: "LEVELLING POINT PLQ (TRIANGLE)", pn: "NSA9502-00", neo: "" },
+                    { desc: "LUMBER SUPPORT", pn: "SB3-070-000-02", neo: "" },
+                    { desc: "M5 MEDICAL KIT", pn: "52000", neo: "" },
+                    { desc: "MAGAZINE RACK FWD (MEDS)", pn: "A2528951702000:FAPE3", neo: "" },
+                    { desc: "MIRROR (FWD TLT )", pn: "A2-254-0006-01", neo: "" },
+                    { desc: "MIRROR (AFT TLT)", pn: "A2-254-0006-03", neo: "" },
+                    { desc: "NASAL CANULAR", pn: "M03102000:K7974", neo: "" },
+                    { desc: "O/H LOCKER DAMPER", pn: "SP8238", neo: "" },
+                    { desc: "O/H LOCKER DAMPER BRACKET", pn: "A2528651620000", neo: "" },
+                    { desc: "O/H LOCKER HINGE (SPRUNG) (SOME X SER)", pn: "ABS1014A061650P", neo: "" },
+                    { desc: "O/H LOCKER HINGE (SPRUNG) (Y SER)", pn: "FA259-50950-002", neo: "" },
+                    { desc: "O/H LOCKER HINGE", pn: "D2527307000000", neo: "" },
+                    { desc: "O/H LOCKER HINGE HOUSING", pn: "FA259-50800-000", neo: "" },
+                    { desc: "O/H LOCKER KEEPER", pn: "FA259-51000-000", neo: "" },
+                    { desc: "O/H LOCKER LATCH / A320+ALL", pn: "JAFA259-50630-000", neo: "" },
+                    { desc: "O/H LOCKER LATCH / A321", pn: "D2528673200000", neo: "" },
+                    { desc: "O/H LOCKER LATCH / G-EUXG", pn: "ABS1014A061650P", neo: "" },
+                    { desc: "O/H LOCKER LATCH SMALL (NEW SILVER)", pn: "FA259-53300-002", neo: "" },
+                    { desc: "O/H LOCKER LATCH SMALL (WHITE)", pn: "1973L07-1K", neo: "" },
+                    { desc: "O/H LOCKER LATCH SMALL (KEEPER)", pn: "FA259-53200-000", neo: "" },
+                    { desc: "O/H LOCKER LATCH EQUIP WARDROBE *NEW*", pn: "SAM271-7RD", neo: "" },
+                    { desc: "O/H LOCKER LATCH EQUIP WARDROBE *OLD TYPE*", pn: "AR138-5-2", neo: "" },
+                    { desc: "O/H LOCKER LATCH BOLTS", pn: "NAS1096-2-6", neo: "" },
+                    { desc: "O/H LOCKER LATCH WASHERS", pn: "ASNA0113-48", neo: "" },
+                    { desc: "O/H LOCKER LATCH / OLD (SQUARE)", pn: "S3106-02G", neo: "" },
+                    { desc: "O/H LOCKER PAINT", pn: "346-57-9185-7CP", neo: "" },
+                    { desc: "OVEN (STEAM)", pn: "72071100 or 72071106", neo: "" },
+                    { desc: "OVEN (NON STEAM) MEDS (FWD GAL)", pn: "67261-001-003", neo: "" },
+                    { desc: "OVEN (STEAM) Y'S", pn: "4323500-00-6600", neo: "" },
+                    { desc: "OVEN (STEAM) MED'S ( F/GAL)", pn: "8201-30-0000-01", neo: "" },
+                    { desc: "OVEN (STEAM) MED'S (R/GAL)", pn: "4323101-00-66-22", neo: "" },
+                    { desc: "OVEN HANDLE", pn: "7S239679", neo: "432356013" },
+                    { desc: "OVEN HANDLE COVER", pn: "", neo: "432356026" },
+                    { desc: "OVEN CAUTION DECAL", pn: "PCBM14049DM", neo: "" },
+                    { desc: "PORTABLE 02 BOTTLE (Small)", pn: "AV2014586-11", neo: "" },
+                    { desc: "PORTABLE 02 BOTTLE (Large)", pn: "AV2014595-11", neo: "" },
+                    { desc: "P1 SEAT", pn: "TAAI3-03РЕ00-01", neo: "TAAI2-33PE20-01" },
+                    { desc: "P1 SEAT (A321)", pn: "TAAI2-33PE00-01", neo: "" },
+                    { desc: "P1 SEAT FOAM BACK", pn: "SB3-006-011-01", neo: "" },
+                    { desc: "P1 SEAT FOAM BOTTOM", pn: "SB3-006-008-01", neo: "" },
+                    { desc: "P1 CAPTAINS SEATBACK CVR", pn: "TAAI2-998211-01", neo: "" },
+                    { desc: "P1 CAPT SEATBACK CVR SHEEPSKIN", pn: "TAAI2-998231-01", neo: "" },
+                    { desc: "P1 CAPT SEAT CVR", pn: "TAAI2-998112-02", neo: "" },
+                    { desc: "P1 CAPT SEAT CVR (ALT)", pn: "CSC1001-103", neo: "" },
+                    { desc: "P1 CAPT SEAT CVR SHEEPSKIN", pn: "TAA12-998231-02", neo: "" },
+                    { desc: "P1 CAPT HEADREST FOAM", pn: "PAL141648:U9987", neo: "" },
+                    { desc: "P1 CAPT HEADREST COVER", pn: "TAAI2-998411-01", neo: "" },
+                    { desc: "P1 CAPT OUTER ARMREST", pn: "TAAI1-404000-03", neo: "" },
+                    { desc: "P1 CAPT INBOARD ARMREST", pn: "TAAI233PE00CTDA", neo: "" },
+                    { desc: "P1 INNER ARMREST CVR (UPPER)", pn: "SB3-002-016-03", neo: "" },
+                    { desc: "P1 INNER ARMREST CVR (LOWER)", pn: "SB3-002-010-01", neo: "" },
+                    { desc: "P2 SEAT", pn: "TAAI2-33CE00-01", neo: "" },
+                    { desc: "P2 SEAT FOAM BACK", pn: "SB3-006-011-02", neo: "" },
+                    { desc: "P2 SEAT FOAM BOTTOM", pn: "SB3-006-008-02", neo: "" },
+                    { desc: "P2 SEAT BACK CVR", pn: "TAAI2-998211-02", neo: "" },
+                    { desc: "P2 SEAT BACK / SHEEP SKIN", pn: "TAAI2-998231-02", neo: "" },
+                    { desc: "P2 SEAT SEAT CVR", pn: "TAAI2-998112-03", neo: "" },
+                    { desc: "P2 SEAT SEAT / SHEEP SKIN", pn: "TAAI2-998132-03", neo: "" },
+                    { desc: "P2 SEAT HEADREST COVER", pn: "TAAI3-998411-01", neo: "" },
+                    { desc: "P2 SEAT OUTER ARMREST", pn: "TAAI1-404000-04", neo: "" },
+                    { desc: "P2 SEAT L/H ARMREST", pn: "TAAI1-993000-06", neo: "" },
+                    { desc: "P2 SEAT L/H ARMREST SHROUD (UPPER)", pn: "SB3-002-016-04", neo: "" },
+                    { desc: "P2 SEAT L/H ARMREST SHROUD (LOWER)", pn: "SB3-002-010-02", neo: "" },
+                    { desc: "P2 SEAT R/H ARMREST", pn: "TAAI1-404000-04", neo: "" },
+                    { desc: "P3 SEAT (OBSERVERS)", pn: "1330622-070-1", neo: "" },
+                    { desc: "P3 SEAT LOCKING PIPPINS", pn: "BLC4R13NW", neo: "" },
+                    { desc: "P3 SEAT ARMREST FAIRING L/H", pn: "133614-1H034", neo: "" },
+                    { desc: "P3 SEAT CUSHION", pn: "133730", neo: "" },
+                    { desc: "P3 SEAT HEADREST CVR", pn: "133431", neo: "" },
+                    { desc: "P3 SEAT HEADREST PLASTIC BACK CVR", pn: "133440", neo: "" },
+                    { desc: "P3 SEAT BACK CVR", pn: "133720", neo: "" },
+                    { desc: "P3 SEAT CUP HOLDER", pn: "151725-01C06", neo: "" },
+                    { desc: "P4 SEAT CVR", pn: "2510154832-0100", neo: "" },
+                    { desc: "PEN HOLDER", pn: "ASNA2094-02", neo: "" },
+                    { desc: "PILOTS SEAT HEADREST ASSY", pn: "SB3-070-002-01:F4643", neo: "" },
+                    { desc: "PILOTS SEAT LUMBER SUPPORT", pn: "SB3-070-000-02", neo: "" },
+                    { desc: "PILOTS TABLE ASSEMBLY (TABLE ONLY)", pn: "D2511041200200", neo: "" },
+                    { desc: "PILOTS TABLE/FOOTREST", pn: "D2511225800000", neo: "" },
+                    { desc: "PILOTS TABLE FOD FLAP", pn: "D2511168700000", neo: "" },
+                    { desc: "PILOTS TABLE HANDLE ROLL PIN", pn: "NSA5319-02-15", neo: "" },
+                    { desc: "PILOTS TABLE LINKAGE SPACER", pn: "D2511046620000", neo: "" },
+                    { desc: "PILOTS TABLE LINKAGE SCREW", pn: "NAS1096-1-7", neo: "" },
+                    { desc: "PILOTS TABLE LINKAGE WASHER", pn: "NAS1149FN632P", neo: "" },
+                    { desc: "PILOTS TABLE LIGHT KNOB", pn: "9SK406361-01", neo: "" },
+                    { desc: "PILOTS TABLE MAP SPRING", pn: "D2511044420000", neo: "" },
+                    { desc: "PILOTS CAP HOOK", pn: "D2511033000000", neo: "" },
+                    { desc: "PINNACLE SEAT CUSTIONS (INBD)", pn: "1012380-027", neo: "" },
+                    { desc: "PINNACLE SEAT CUSTIONS (CTR)", pn: "1012380-027", neo: "" },
+                    { desc: "PINNACLE SEAT CUSTIONS (OUTBD)", pn: "1012380-027", neo: "" },
+                    { desc: "PINNACLE SEAT BRIDGE TABLE ASSY", pn: "1027481-007EZ06", neo: "" },
+                    { desc: "PINNACLE SEAT BRIDGE TABLE ASSY (ROW 1 )", pn: "1020311-005EZ06", neo: "" },
+                    { desc: "RAIN REPELLANT BOTTLE", pn: "402Q80-1", neo: "" },
+                    { desc: "READING LT LENS ( GREY )", pn: "9EL411135-05", neo: "" },
+                    { desc: "RECLINE ACTUATOR (PINNACLE)", pn: "SP23789L", neo: "" },
+                    { desc: "RECLINE ACTUATOR (MIDLANDS)", pn: "20402759", neo: "" },
+                    { desc: "RECLINE CABLE", pn: "SP23997C30", neo: "" },
+                    { desc: "RECLINE CABLE/ BUTTON", pn: "SP23996C27", neo: "" },
+                    { desc: "RECLINE CABLE/ BUTTON (MIDLANDS)", pn: "109923", neo: "" },
+                    { desc: "RESUS KIT", pn: "1_105787-1", neo: "" },
+                    { desc: "RESTRAINT KIT", pn: "TRT01", neo: "" },
+                    { desc: "RING SPRING", pn: "DAN191C20", neo: "" },
+                    { desc: "ROLLER", pn: "A825400441-000", neo: "" },
+                    { desc: "RUDDER PEDDLE RUBBER", pn: "D2721010320000", neo: "" },
+                    { desc: "RUBBER CABIN TRIM END CAP", pn: "JMS2019-4", neo: "" },
+                    { desc: "RUBBER TUBE (CABIN RETAINER PSU PNL)", pn: "98A25207503000", neo: "" },
+                    { desc: "SCUPPER DRAIN PIPE (G1)", pn: "7YW8050A02M43", neo: "" },
+                    { desc: "SEAT ARM CAP (NEO)", pn: "", neo: "139-00-327-01NN" },
+                    { desc: "SEAT ARM REAR COVER (NEO)", pn: "", neo: "139-00-833-08HQ:C1084" },
+                    { desc: "SEAT ARM SIDE CVR LH", pn: "", neo: "139-00-314-93CH" },
+                    { desc: "SEAT ARM SIDE CVR RH", pn: "", neo: "139-00-314-94CH" },
+                    { desc: "SEAT BELTS", pn: "2006-1-511-2396", neo: "" },
+                    { desc: "SEAT BELTS (DEMO)", pn: "501310-405-2251", neo: "" },
+                    { desc: "SEAT BELTS (EXTENSION)", pn: "501848-417-1849", neo: "" },
+                    { desc: "SEAT BELTS (EXTENSION/INFANT)", pn: "502761-415-2269", neo: "" },
+                    { desc: "SEAT CALL BELL/LT PANEL L/H", pn: "D9259024002900", neo: "" },
+                    { desc: "SEAT CALL BELL/LT PANEL R/H", pn: "D9259024002800", neo: "" },
+                    { desc: "SEAT CALL BELL/LT PANEL DEF SEAT IND REAR", pn: "D2527719965400", neo: "" },
+                    { desc: "SEAT CALL BELL/LT PANEL NUMBERS", pn: "РСК1317", neo: "" },
+                    { desc: "SEAT COVER (MEDS( (TRAVELLER)", pn: "AB001-1677", neo: "" },
+                    { desc: "SEAT END BAY L/H (CLUB SEAT)", pn: "1010210-301BWC", neo: "" },
+                    { desc: "SEAT EMERG LT HOLDER", pn: "1012857-315BWC", neo: "" },
+                    { desc: "SEAT EMERG LT HOLDER BACK PLATE", pn: "1013437-301BTD", neo: "" },
+                    { desc: "SEAT HYDR LOCK", pn: "1011535-003", neo: "" },
+                    { desc: "SEAT NUMBER DECAL KIT", pn: "D2527715000000", neo: "" },
+                    { desc: "SEAT POCKET", pn: "788-00-710-02", neo: "139-00-710-08" },
+                    { desc: "SEAT TRACK CAP", pn: "ACIFL03039-02", neo: "" },
+                    { desc: "SEAT USB PORT", pn: "IFC5064-002", neo: "" },
+                    { desc: "SEB CVR L/H (PINNACLE)", pn: "1012604-335AXX", neo: "" },
+                    { desc: "SEB CVR R/H (PINNACLE)", pn: "1012604-336AXX", neo: "" },
+                    { desc: "SEMPEN BLUE ( PAINT PEN)", pn: "CA8000B51116SP", neo: "" },
+                    { desc: "SEMPEN GREY (PAINT PEN)", pn: "CA8000B707SP", neo: "" },
+                    { desc: "SEMPEN WHITE (PAINT PEN)", pn: "CA8000B707055SP", neo: "" },
+                    { desc: "SEMPEN RED ( PAINT PEN)", pn: "CA8000B1839SP", neo: "" },
+                    { desc: "SEP DOOR", pn: "JA182401-20P05", neo: "" },
+                    { desc: "SEP DOOR CATCH", pn: "VE64-10-126-50", neo: "" },
+                    { desc: "SEP DOOR PLACARDS", pn: "PCBM14910DM", neo: "" },
+                    { desc: "DOOR HINGE PINS X2", pn: "150400-05", neo: "" },
+                    { desc: "SPACER X2", pn: "160400-6", neo: "" },
+                    { desc: "WASHER X2", pn: "150400-06", neo: "" },
+                    { desc: "SEP DR KIT", pn: "ATTNSEATKIT:BA3302Z", neo: "" },
+                    { desc: "Fire Ext", pn: "PCBM14916DM", neo: "" },
+                    { desc: "Torch", pn: "PCBM14915DM", neo: "" },
+                    { desc: "Manual Release", pn: "PCBM14914DM", neo: "" },
+                    { desc: "Manual release pouch", pn: "2E7025-1", neo: "" },
+                    { desc: "Fire Glove", pn: "PCBM15020DM", neo: "" },
+                    { desc: "High Vis", pn: "PCBM24255DM", neo: "" },
+                    { desc: "SHAVER INVERTER", pn: "4056", neo: "" },
+                    { desc: "SHAVER SOCKET", pn: "F1000440-00", neo: "" },
+                    { desc: "SHAVER / FRONT PANEL", pn: "F1000404-03", neo: "" },
+                    { desc: "SHAVER / FRONT PANEL SUPPORT BRACKET", pn: "F1000449-00", neo: "" },
+                    { desc: "SHAVER PSU ORANGE COMPLETE", pn: "A3-929-0009-003", neo: "" },
+                    { desc: "SIDEWALL LOWER CVR (EMERG LTS)", pn: "D2528121902100", neo: "" },
+                    { desc: "SIDEWALL PROTECTIVE CAP", pn: "D9249116000000", neo: "" },
+                    { desc: "SLIDE ARMED (FLOOR PLATE) D1L", pn: "D5361087700000", neo: "" },
+                    { desc: "SLIDE ARMED (FLOOR PLATE) D1R", pn: "D5361087800000", neo: "" },
+                    { desc: "SLIDE ARMED (FLOOR PLATE) D2L", pn: "D5367010400600", neo: "" },
+                    { desc: "SLIDE ARMED (FLOOR PLATE) D2R", pn: "D5367010400700", neo: "" },
+                    { desc: "SLIDE ARMING IND IN DOOR WINDOW LENS", pn: "9EL404660-00", neo: "" },
+                    { desc: "SLIDE ARMING IND IN DOOR WINDOW LENS UNIT", pn: "2LA005469-00", neo: "" },
+                    { desc: "SLIDE ARMING IND WINDOW IN DOOR", pn: "D2527016820000", neo: "" },
+                    { desc: "SLIDE DISARM LOCK OUT PIN", pn: "MS17984C310", neo: "" },
+                    { desc: "Slide Extractor", pn: "225512-131", neo: "" },
+                    { desc: "Slide Extractor", pn: "225512-3", neo: "" },
+                    { desc: "SMOKE HOOD", pn: "E28180-10", neo: "15-40F80" },
+                    { desc: "SMOKE HOOD BRACKET", pn: "E28183-04:D1379", neo: "" },
+                    { desc: "SOAP DISPENSER MOUNT STRAIGHT", pn: "TRBO0BCNA", neo: "" },
+                    { desc: "SOAP DISPENSER MOUNT ANGLED", pn: "TRBASE125", neo: "" },
+                    { desc: "SPEEDBIRD LOGO (ROW 1)", pn: "BAW05-1097", neo: "BAW05-080-1:K8862" },
+                    { desc: "STEERING LOCK OUT PIN", pn: "D23156000", neo: "" },
+                    { desc: "STREAMER FLAG", pn: "D5211080120000", neo: "" },
+                    { desc: "STOWAGE STRAP (EX BMI, TROLLEY TOPS)", pn: "10136745-20", neo: "" },
+                    { desc: "SUN-VISOR UNIT", pn: "3-7017-100", neo: "" },
+                    { desc: "SUN-VISOR SCREEN", pn: "160-10741-260", neo: "" },
+                    { desc: "SUN-VISOR STOW CLIP", pn: "160-11652-000", neo: "" },
+                    { desc: "TABARD HI-VIS", pn: "2736030", neo: "" },
+                    { desc: "TEDLAR (FWD BULKHEAD)", pn: "70F1D0233M2N1", neo: "" },
+                    { desc: "TIEBACK", pn: "10153265-1", neo: "10153265-2" },
+                    { desc: "TIEBACK", pn: "10153265-2", neo: "" },
+                    { desc: "TOILET ASHTRAY", pn: "A825400503-202", neo: "" },
+                    { desc: "TOILET BIN", pn: "5L0012000100000", neo: "" },
+                    { desc: "TOILET BIN (NEW REAR GAL) L/H", pn: "", neo: "G901209-23" },
+                    { desc: "TOILET BIN (NEW REAR GAL) R/H", pn: "", neo: "G901209-19" },
+                    { desc: "TOILET BIN FIRE SEAL", pn: "DAN77-2", neo: "" },
+                    { desc: "TOILET BIN FLAP", pn: "DCIN122-19-3", neo: "" },
+                    { desc: "TOILET BIN FLAP (NEW REAR GAL)", pn: "G901151-501", neo: "" },
+                    { desc: "TOILET BIN FLAP DAMPER", pn: "DCIN112-01", neo: "" },
+                    { desc: "TOILET BIN FLAP DAMPER (NEW REAR GAL)", pn: "CDZ4000-925", neo: "" },
+                    { desc: "TOILET BIN DOOR", pn: "A225400429-562:5270", neo: "S125400431-590" },
+                    { desc: "TOILET BIN DOOR ( NEW REAR GAL) L/H", pn: "", neo: "G901209AAA607" },
+                    { desc: "TOILET BIN DOOR (NEW REAR GAL) R/H", pn: "", neo: "G901474AAA514" },
+                    { desc: "TOILET BIN DOOR HINGE (NEW R/TLTS)", pn: "CDSP4906-3", neo: "CDSP4906-3:29780" },
+                    { desc: "TOILET BIN DOOR HINGE KIT", pn: "", neo: "CDKG90-167:29780" },
+                    { desc: "TOILET BIN DOOR LATCH", pn: "AR138-5-2", neo: "" },
+                    { desc: "TOILET BIN DOOR LATCH SCREWS", pn: "NAS514P632-5", neo: "" },
+                    { desc: "TOILET BIN DOOR PLACARD", pn: "F2527708953800", neo: "" },
+                    { desc: "TOILET DOOR ASHTRAY OUTER", pn: "1A113-0139-101", neo: "" },
+                    { desc: "TOILET DOOR LATCH (TLT A+D)", pn: "5472R", neo: "" },
+                    { desc: "TOILET DOOR LATCH (BI-FOLD)", pn: "TS340-021", neo: "" },
+                    { desc: "TOILET DOOR DAMPER (BI-FOLD)", pn: "192856:D8485", neo: "" },
+                    { desc: "TOILET DOOR LATCH KNOB", pn: "TS340-00-21", neo: "" },
+                    { desc: "TOILET DOOR ENGAGED SURROUND", pn: "5472-14", neo: "" },
+                    { desc: "TOILET DOOR MICRO SW", pn: "A392500305-000", neo: "" },
+                    { desc: "TOILET FLUSH SWITCH", pn: "A3-929-0001-01", neo: "" },
+                    { desc: "TOILET FLOOR COVERING (DENSIFIED) TLT \"G\"", pn: "10158441-3", neo: "" },
+                    { desc: "TOILET FLOOR COVERING (DENSIFIED) TLT \"F\"", pn: "10158441-1", neo: "" },
+                    { desc: "TOILET HAND TOWEL LATCH", pn: "", neo: "G901114-503:29780" },
+                    { desc: "TOILET SERVICE CABINET - CTR PART", pn: "A225400414-700", neo: "" },
+                    { desc: "TOILET SERVICE CABINET - LOWER PART", pn: "A225400415-802", neo: "" },
+                    { desc: "TOILET ROLL HOLDER", pn: "A825400441-000", neo: "" },
+                    { desc: "TOILET CABINET SERVICE BOX", pn: "A3-254-0012-302", neo: "" },
+                    { desc: "TOILET SEAT ASSY", pn: "DHP171193", neo: "" },
+                    { desc: "TOILET SEAT DECAL", pn: "PCBM15015DM", neo: "" },
+                    { desc: "TOILET SHROUD", pn: "S125400465-500", neo: "" },
+                    { desc: "TOILET SHROUD BOLTS", pn: "MS24693C52", neo: "" },
+                    { desc: "TOILET SHROUD NUTS", pn: "NSA5067-08-1", neo: "" },
+                    { desc: "TOILET SINK STRAINER ASSY", pn: "7800259", neo: "" },
+                    { desc: "TOILET SINK STRAINER CAP", pn: "7700525", neo: "" },
+                    { desc: "TOILET SINK STRAINER CAP SEAL", pn: "7750041-113", neo: "" },
+                    { desc: "TOILET SINK STRAINER", pn: "7600763", neo: "" },
+                    { desc: "TOILET MIRROR (TLT A)", pn: "A2-254-0006-01", neo: "" },
+                    { desc: "TOILET TAP", pn: "2.98029E+12", neo: "2980372100000:80477" },
+                    { desc: "TOILET WATER HEATER", pn: "24E507009G03", neo: "" },
+                    { desc: "TOILET WASTE BIN", pn: "DHP17665", neo: "" },
+                    { desc: "TOILET WASTE BIN DOOR", pn: "S125400431-502:C5270", neo: "" },
+                    { desc: "TOILETRIES RACK (FWD TLT)", pn: "DHP16048-2", neo: "" },
+                    { desc: "TORCH (IDX SERIES FLIGHT DECK)", pn: "P2-07-0001-214", neo: "" },
+                    { desc: "TRAY TABLE (RECARO)    (NEO)", pn: "", neo: "966-00-500-01" },
+                    { desc: "TRAY TABLE LATCH", pn: "1012222-051KA10", neo: "139-00-502-70MK" },
+                    { desc: "TRAY TABLE LATCH OVR/WNG L/H", pn: "1012222-055KA10", neo: "" },
+                    { desc: "TRAY TABLE LATCH OVR/WNG R/H", pn: "1012222-056KA10", neo: "" },
+                    { desc: "TRAY TABLE LATCH SCREWS", pn: "MS24693552", neo: "" },
+                    { desc: "TROLLEY TOP", pn: "LE3194-1", neo: "" },
+                    { desc: "TROLLEY TOP LOCKER LATCH", pn: "A20001-3-1", neo: "" },
+                    { desc: "ULTRALOC", pn: "1003106-001", neo: "" },
+                    { desc: "ULTRALOC COVER", pn: "1003107-001", neo: "" },
+                    { desc: "ULTRALOC (NEW SEATS)", pn: "SP23789L", neo: "" },
+                    { desc: "VAC SOCKET", pn: "E0354-301", neo: "" },
+                    { desc: "VAC SOCKET COVER", pn: "D2528660901500", neo: "" },
+                    { desc: "VIDEO CABINET LATCH", pn: "A25014-1", neo: "" },
+                    { desc: "VIDEO CABINET HINGE", pn: "D2527077134600:FAPE3", neo: "" },
+                    { desc: "WARDROBE DOOR (DR1L)", pn: "BAA10-006-001", neo: "" },
+                    { desc: "WARDROBE DOOR (DR1L) LATCH ASBY", pn: "SCD54-1022", neo: "" },
+                    { desc: "WARDROBE DR SPRING LATCH ( TOP DR1L OLD )", pn: "6700161", neo: "" },
+                    { desc: "WARDROBE DR SLIDING LOCK (DR1L)", pn: "A2001-3-13", neo: "" },
+                    { desc: "WARDROBE DR LATCH (DR2R NEW)", pn: "SAM271-7RD", neo: "215538-3" },
+                    { desc: "WARDROBE UPPER DR HINGE", pn: "BAA10-1171", neo: "" },
+                    { desc: "WASTE BIN PILOT", pn: "D2511060700200", neo: "" },
+                    { desc: "WHEELCHAIR", pn: "2520502MBA", neo: "" },
+                    { desc: "WHEELCHAIR STRAPS", pn: "2016-1-591-2251", neo: "" },
+                    { desc: "WINDOW BLIND", pn: "D2529185502400", neo: "" },
+                    { desc: "WINDOW BLIND (EMERG EXIT)", pn: "D2528976100000", neo: "" },
+                    { desc: "WINDOW INNER (with tabs)", pn: "D2529185820000", neo: "" },
+                    { desc: "WINDOW SURROUND (2x SIDE MOUNTS )", pn: "D2529354800000", neo: "" },
+                    { desc: "WINDOW SURROUND (4X SIDE MOUNTS)", pn: "D2529185900000", neo: "" },
+                    { desc: "WINDOW FRAME TRIM", pn: "D2529354800400", neo: "" }
+                ]
+            },
+            "26": {
+                title: "Fire Protection",
+                items: [
+                    { desc: "SMOKE DET LAV", pn: "PAI2830-00 / PAA12-00", neo: "" },
+                    { desc: "SMOKE DET (LAV)", pn: "GAI2800-02", neo: "" },
+                    { desc: "SDCU", pn: "RAI2800M0706", neo: "" },
+                    { desc: "FDU", pn: "7304-01-02", neo: "" },
+                    { desc: "ENG/APU FIRE PNL", pn: "330TS08Y", neo: "" },
+                    { desc: "PYLON LOOP DET", pn: "3601-91", neo: "" },
+                    { desc: "APU FIRE LOOP", pn: "4550-01", neo: "" },
+                    { desc: "AVEC SMOKE DET", pn: "CG7G0", neo: "" },
+                    { desc: "CARGO SMOKE DET", pn: "PAI2800-01", neo: "" },
+                    { desc: "CARGO SMOKE DET (ALT)", pn: "PPA1101-00/PPA1100-00", neo: "" },
+                    { desc: "FIRE DET FAN LOOP", pn: "S702Y0202", neo: "" },
+                    { desc: "FIRE DET CORE LOOP", pn: "7827-02", neo: "" },
+                    { desc: "ENG SQUIB CARTRIDGE", pn: "30903886", neo: "" },
+                    { desc: "ENG SQUIB CARTRIDGE (ALT)", pn: "86181007", neo: "" },
+                    { desc: "APU SQUIB CARTRIDGE", pn: "30903827", neo: "" },
+                    { desc: "BOTTLE EXTINGSHR", pn: "33600005-3", neo: "" },
+                    { desc: "CARGO FIRE BOTTLE", pn: "34600017", neo: "" },
+                    { desc: "CARGO SQUIB CARTRIDGE", pn: "30900000M", neo: "" },
+                    { desc: "APU FIRE CAP", pn: "E0424R3 /E", neo: "" },
+                    { desc: "LT BODY ASSY", pn: "E0423-01 OR E0423-01E", neo: "" },
+                    { desc: "FIL FOR ABOVE", pn: "E0029-01", neo: "" }
+                ]
+            },
+            "27": {
+                title: "Flight Controls",
+                items: [
+                    { desc: "SPOILER REMOVAL TOOL", pn: "SL90-315-7500", neo: "" },
+                    { desc: "ELAC", pn: "3945122506", neo: "" },
+                    { desc: "ELAC", pn: "3945128102", neo: "" },
+                    { desc: "SEC", pn: "B372BAM0509", neo: "" },
+                    { desc: "CSU FLAP LVR ELEC BX", pn: "780B0000-01", neo: "" },
+                    { desc: "CSU FLAP LVR ELEC BX", pn: "780A0000-01", neo: "" },
+                    { desc: "FAC", pn: "B397BAM0621", neo: "" },
+                    { desc: "FCDC", pn: "115370-1016", neo: "" },
+                    { desc: "SFCC", pn: "49-170-07", neo: "" },
+                    { desc: "SFCC", pn: "49-170-11", neo: "" },
+                    { desc: "SPOILER LOCK PIN", pn: "98D27603002", neo: "" },
+                    { desc: "SPOILER SERVO", pn: "31077-111", neo: "" },
+                    { desc: "G HYD PX SW2", pn: "50-2-3100-00", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-8", neo: "" },
+                    { desc: "RUDDER TRIM ACTUATOR", pn: "6137-5", neo: "" }
+                ]
+            },
+            "28": {
+                title: "Fuel",
+                items: [
+                    { desc: "FQIC", pn: "SIC5059-11-0207", neo: "" },
+                    { desc: "FUEL QTY SELECTOR", pn: "796-815-02-03", neo: "" },
+                    { desc: "FUEL QTY INDICATOR", pn: "1407KID02-03", neo: "" },
+                    { desc: "FLSCU", pn: "30042-0000-0501", neo: "" },
+                    { desc: "TXFR VLV ACTUATOR", pn: "HTE200002-1", neo: "" },
+                    { desc: "TEMP SNSR", pn: "3540000-1", neo: "" },
+                    { desc: "CADENSION", pn: "796-809-6A", neo: "" },
+                    { desc: "APU FUEL PUMP", pn: "C12CB0010 OR C12CB0012", neo: "" },
+                    { desc: "FUEL CAP", pn: "0727540:U1918", neo: "" },
+                    { desc: "FUEL PUMP CTR TK", pn: "568-1-27202-002", neo: "" },
+                    { desc: "FUEL AUTO MAN SW", pn: "E0415C3LM004", neo: "" },
+                    { desc: "PUMP PUSH SW ASSY", pn: "E0415C3LM002", neo: "" },
+                    { desc: "FUEL PUMP MAIN TK", pn: "P99C38-601", neo: "" },
+                    { desc: "FUEL PUMP (R/L WING & CTR TKS)", pn: "P99C38-605", neo: "" },
+                    { desc: "PACKING", pn: "NSA8203-265", neo: "" },
+                    { desc: "CTR FUEL TK PX SW", pn: "HTE69000-1", neo: "" },
+                    { desc: "MAIN FUEL TK PX SW", pn: "HTE69000-1", neo: "" },
+                    { desc: "PACKING", pn: "NSA8200-6", neo: "" },
+                    { desc: "APU FUEL PUMP DC", pn: "C12CB0012", neo: "" },
+                    { desc: "PACKING", pn: "NSA8200-8", neo: "" }
+                ]
+            },
+            "29": {
+                title: "Hydraulic Power",
+                items: [
+                    { desc: "FILL HOSE HYD TANK", pn: "AE1011031G0780", neo: "" },
+                    { desc: "HYD QTY IND", pn: "VT477-2 / VT477-3", neo: "" },
+                    { desc: "HYD HAND PUMP", pn: "6-1404-0000-4 / 6-1404-0102-4", neo: "" },
+                    { desc: "G HYD PX SW 2", pn: "50-2-3100-00", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-8", neo: "" },
+                    { desc: "G HYD PX SW 1", pn: "50-2-3100-00", neo: "" },
+                    { desc: "Y HYD PX SW 2", pn: "50-2-3100-00", neo: "" },
+                    { desc: "Y HYD PX SW 1", pn: "50-2-3100-00", neo: "" },
+                    { desc: "B HYD PX SW 2", pn: "50-2-3100-00", neo: "" },
+                    { desc: "B HYD PX SW 1", pn: "50-2-3100-00", neo: "" },
+                    { desc: "G HYD PUMP ENG 1", pn: "887673", neo: "" },
+                    { desc: "Y HYD PUMP ENG 2", pn: "887673", neo: "" },
+                    { desc: "B ELEC HYD PUMP", pn: "4205602 / 51154-02", neo: "" },
+                    { desc: "G PUMP HYD PX SW ENG NO1", pn: "50-1-3100-00", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-10", neo: "" },
+                    { desc: "Y PUMP HYD PX SW ENG NO2", pn: "50-1-3100-00", neo: "" },
+                    { desc: "B ELEC PUMP CTL TXMR", pn: "190QA01", neo: "" },
+                    { desc: "YELLOW ELEC PUMP", pn: "4205602 / 51154-02", neo: "" },
+                    { desc: "ELEC Y PUMP FAULT/ON SW (40VU)", pn: "E0415B3LM016 / 851-30486-312", neo: "" },
+                    { desc: "Y HYD ENG2 FAULT/OFF SW (40VU)", pn: "E0415C3LM002", neo: "" },
+                    { desc: "B HYD PUMP FAULT/OFF SW (40VU)", pn: "E0415C3LM002", neo: "" },
+                    { desc: "G HYD ENG1 FAULT/OFF SW (40VU)", pn: "E0415C3LM002", neo: "" },
+                    { desc: "PTU AUTO FAULT/OFF SW (40VU)", pn: "E0415C3LM002", neo: "" },
+                    { desc: "RAT SW (GUARDED, 40VU)", pn: "E0064-80-5-0", neo: "" },
+                    { desc: "BLUE/HYD OVRD PUMP SW (50VU)", pn: "E0415B3LM006", neo: "" },
+                    { desc: "R HYD LEAK MESRN VLV SW (50VU)", pn: "E0415C3LM009", neo: "" },
+                    { desc: "G HYD LEAK MESRN VLV SW (50VU)", pn: "E0415C3LM009", neo: "" },
+                    { desc: "Y HYD LEAK MESRN VLV SW (50VU)", pn: "E0415C3LM009", neo: "" }
+                ]
+            },
+            "30": {
+                title: "Ice and Rain Protection",
+                items: [
+                    { desc: "ICE DET PROBE", pn: "864-001", neo: "" },
+                    { desc: "WING ANTI-ICE VLV", pn: "38E93-5", neo: "" },
+                    { desc: "WING ANTI-ICE SW LT ASSY", pn: "E0415C3LM001", neo: "" },
+                    { desc: "ENG ANTI-ICE VLV", pn: "326975", neo: "" },
+                    { desc: "ENG ANTI-ICE VLV SW LT ASSY", pn: "E0415C3LM001", neo: "" },
+                    { desc: "WHC", pn: "6664287-0", neo: "" },
+                    { desc: "AOA SNSR", pn: "C16291AA", neo: "" },
+                    { desc: "SEAL", pn: "A9232075320000", neo: "" },
+                    { desc: "PITOT PROBE", pn: "1663214301", neo: "" },
+                    { desc: "DRAIN MAST FWD/REAR", pn: "4-60000H883-00", neo: "" },
+                    { desc: "DRAIN MAST SCREWS", pn: "NAS1102E5-16", neo: "" },
+                    { desc: "DMCU DRAIN MAST CNTL", pn: "Z220H0002110", neo: "" },
+                    { desc: "STATIC PLATE L&R", pn: "D201094", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-6", neo: "" },
+                    { desc: "PACKING", pn: "NAS1611-026", neo: "" },
+                    { desc: "TAT PROBE", pn: "102LA2AG", neo: "" },
+                    { desc: "SEAL", pn: "D3411002520000", neo: "" },
+                    { desc: "ANTI-ICE DET", pn: "0871DP3", neo: "" },
+                    { desc: "SEAL", pn: "D3081002720000", neo: "" },
+                    { desc: "WIPER BLADE", pn: "4343253", neo: "" }
+                ]
+            },
+            "31": {
+                title: "Indicating/Recording Systems",
+                items: [
+                    { desc: "SDAC", pn: "350E5500201", neo: "" },
+                    { desc: "SDAC", pn: "350E5500202", neo: "" },
+                    { desc: "FDIU", pn: "ED43A1D5", neo: "" },
+                    { desc: "FDIU", pn: "ED43A1D6", neo: "" },
+                    { desc: "FWC", pn: "350E053020202", neo: "" },
+                    { desc: "SSFDR SOLID ST (DFDR/DMU)", pn: "980-4700-042", neo: "" },
+                    { desc: "DMU", pn: "795040-31-002", neo: "" },
+                    { desc: "DMU", pn: "795040-31-003", neo: "" },
+                    { desc: "PRINTER", pn: "8055515-4501", neo: "" },
+                    { desc: "DISPLAY UNIT PFD/ND & ECAM SCREENS", pn: "3906130302", neo: "" },
+                    { desc: "DISPLAY UNIT PFD/ND & ECAM SCREENS", pn: "3907130402", neo: "" },
+                    { desc: "CFDIU", pn: "B401ACM0507", neo: "" },
+                    { desc: "DMC", pn: "9615325040", neo: "" },
+                    { desc: "CLOCK", pn: "APE5100-1", neo: "" },
+                    { desc: "QAR DISC RECORDER", pn: "D52000-60000", neo: "" },
+                    { desc: "MCDU", pn: "4077880-980", neo: "" },
+                    { desc: "MCDU", pn: "4077880-981", neo: "" },
+                    { desc: "MDDU DATA LOADER", pn: "AC68A200", neo: "" },
+                    { desc: "MDDU DATA LOADER (ALT, EFF 1 TO 5)", pn: "AC68A100", neo: "" },
+                    { desc: "FDIMU (FDIU/DMU)", pn: "2234320-01-01", neo: "" },
+                    { desc: "SOFTWARE", pn: "BAACMSAB5060146", neo: "" }
+                ]
+            },
+            "32": {
+                title: "Landing Gear",
+                items: [
+                    { desc: "BRAKE UNIT (319/320)", pn: "C20225508", neo: "" },
+                    { desc: "BRAKE UNIT (321)", pn: "C20534000-1", neo: "" },
+                    { desc: "BRK HYD COUPLING ASS", pn: "HTE711-59V", neo: "" },
+                    { desc: "O'RING", pn: "NAS1612-6", neo: "" },
+                    { desc: "BRAKE PRESS IND", pn: "64882-206-1", neo: "" },
+                    { desc: "BSCU", pn: "C20216332292C", neo: "" },
+                    { desc: "TIRE PX TX ROT MECH (NOSE NLG)", pn: "1338-1450", neo: "" },
+                    { desc: "TIRE PX TX ROT MECH (MAIN MLG)", pn: "4133801010", neo: "" },
+                    { desc: "TIRE PX SNSR", pn: "4133801030", neo: "" },
+                    { desc: "BMCU BRK MONT CMPTR", pn: "35-1H5-1001", neo: "" },
+                    { desc: "BMCU BRK MONT CMPTR (ALT)", pn: "35-1H5-1002", neo: "" },
+                    { desc: "BRK TEMP TERMAL CPL", pn: "C20229001", neo: "" },
+                    { desc: "TACHOMETER", pn: "C20105000", neo: "" },
+                    { desc: "PARK BRK CNTL SW (A321 GIB AIR)", pn: "058-002-03", neo: "" },
+                    { desc: "PARK BRK VLV (A321 GIB AIR)", pn: "C24703003", neo: "" },
+                    { desc: "LGCIU", pn: "664700500A4D", neo: "" },
+                    { desc: "BFAN SCREWS", pn: "NAS1801-08-8:80205", neo: "" },
+                    { desc: "BFAN MOTOR", pn: "AE1502U02:F4957", neo: "" },
+                    { desc: "THERMOCOUPLE", pn: "C20229001:F6137", neo: "" },
+                    { desc: "BTMU - BRAKE TEMPERATURE MONITOR UNIT", pn: "35-1H5-1002:F9111", neo: "" },
+                    { desc: "MLG FAIRING PLASTIC BOLT", pn: "D5725125420400:FAPE3", neo: "" }
+                ]
+            },
+            "33": {
+                title: "Lights",
+                items: [
+                    { desc: "BAG LT FIL P1 + P2", pn: "E0355-01", neo: "" },
+                    { desc: "BALLAST SIDE/ROOF", pn: "3250-80", neo: "" },
+                    { desc: "BEACON LWR/UPPER", pn: "2LA455010-00 / 2LA455968-01", neo: "" },
+                    { desc: "BEACON PWR SUPPLY", pn: "8ES455012-00", neo: "" },
+                    { desc: "BEACON TOGGLE SW", pn: "E0062D1S4BJOA", neo: "" },
+                    { desc: "BLACK LOCKS FOR BOARD ABOVE", pn: "HNST4-188-1", neo: "" },
+                    { desc: "CARGO DOOR OPEN LT", pn: "327", neo: "" },
+                    { desc: "CARGO DOOR OPEN IND", pn: "E0070B1-07", neo: "" },
+                    { desc: "CARGO DOOR OPEN LT (LED GRN)", pn: "ABS1436G1", neo: "" },
+                    { desc: "CARGO HOLD LTS", pn: "F15W840", neo: "" },
+                    { desc: "CARGO LOADING LT ASSY", pn: "F1001940-00", neo: "" },
+                    { desc: "CALL LT", pn: "6839BPE", neo: "" },
+                    { desc: "CALL LT PLACARD SET", pn: "D2527715002000", neo: "" },
+                    { desc: "CALL LT ROW NO. 1", pn: "D2527715065100", neo: "" },
+                    { desc: "CEILING LIGHTS BALLAST UNIT", pn: "3250-81", neo: "" },
+                    { desc: "CEILING LIGHTS NORM (LED, CLASSIC CIDS)", pn: "2LA456395-53", neo: "" },
+                    { desc: "CEILING LIGHT SHORT (LED, CLASSIC CIDS)", pn: "2LA456395-51", neo: "" },
+                    { desc: "CEILING LIGHT (GALLEY/ENTRY) (LED, CLASSIC CIDS)", pn: "2LA456395-93", neo: "" },
+                    { desc: "CEILING LIGHTS NORM (LED, NEW CIDS)", pn: "2LA456395-03", neo: "" },
+                    { desc: "CEILING LIGHT SHORT (LED, NEW CIDS)", pn: "2LA456395-01", neo: "" },
+                    { desc: "CEILING LIGHT (GALLEY/ENTRY) (LED, NEW CIDS)", pn: "2LA456395-43", neo: "" },
+                    { desc: "CONSOLE LT CAPT", pn: "727-1312-02", neo: "" },
+                    { desc: "COMPASS LT", pn: "ZV3335", neo: "" },
+                    { desc: "COUNTER LTS", pn: "6S6DC120V", neo: "" },
+                    { desc: "CRIMP TOOL FOR ABOVE", pn: "S111001129070", neo: "" },
+                    { desc: "DOOR CAB PRES LT ASSY", pn: "2LA007307-00", neo: "" },
+                    { desc: "DOOR SLIDE ARM LT ASSY", pn: "2LA005469-00", neo: "" },
+                    { desc: "ELT INDICATOR", pn: "E0424A3", neo: "" },
+                    { desc: "ELT SW PNL", pn: "S1820513-02", neo: "" },
+                    { desc: "ELT TXMTR", pn: "S1819502-02", neo: "" },
+                    { desc: "EMERG LT SEAT ASSY", pn: "BR9644-21", neo: "" },
+                    { desc: "EMG DR SLIDE LT FIL", pn: "44", neo: "" },
+                    { desc: "EMG EXIT LT DR HORIZONTAL", pn: "BR9279-106", neo: "" },
+                    { desc: "EMG EXIT SIGN ABOVE DOOR", pn: "25-1430-3", neo: "" },
+                    { desc: "EMG EXIT SIGN ABOVE DOOR", pn: "10-1310-1", neo: "" },
+                    { desc: "EMG EXIT SIGN ABOVE DR FILAMENTS", pn: "ASTM5X6NE1", neo: "" },
+                    { desc: "EMG EXIT SIGN SIDE OF DOOR FWD DR", pn: "BR9279-106", neo: "" },
+                    { desc: "EMG EXIT SIGN SIDE OF DOOR AFT DR", pn: "BR9279-105", neo: "" },
+                    { desc: "EXIT SIGN (VERTICAL)", pn: "BC5-0393-105", neo: "" },
+                    { desc: "EMG FLOOR LT FILS", pn: "1165-02", neo: "" },
+                    { desc: "EXIT IDENTIFIER 2L", pn: "BR9279-106", neo: "" },
+                    { desc: "EXIT IDENTIFIER 2R", pn: "BR9279-105", neo: "" },
+                    { desc: "FD O/HD PNL LT FUSE", pn: "8JS405064-00", neo: "" },
+                    { desc: "FLIGHT DECK ANUNCIATOR LIGHT BOARD", pn: "35-0F5-1000", neo: "" },
+                    { desc: "FLIGHT DECK DOME LIGHT", pn: "8GH004554-28", neo: "" },
+                    { desc: "FLIGHT DECK PEDISTOL FLD LT", pn: "9EL408208-28", neo: "" },
+                    { desc: "FLIGHT DECK PEDISTOL FLD LT FIL", pn: "8GH004554-28", neo: "" },
+                    { desc: "FLOODLIGHT", pn: "5108WW", neo: "" },
+                    { desc: "FLOOR PROX TRACK", pn: "08163-0037-08", neo: "" },
+                    { desc: "GAL COUNTER LT LENS CVR", pn: "7YE3600A19G03", neo: "" },
+                    { desc: "GAL COUNTER LT (FILS)", pn: "6S6DC120V", neo: "" },
+                    { desc: "ICE INDICATOR LIGHT", pn: "864-001", neo: "" },
+                    { desc: "LANDING LIGT ASSY (NOT 321)", pn: "4315542", neo: "" },
+                    { desc: "LANDING LIGT ASSY (321)", pn: "4331772", neo: "" },
+                    { desc: "LANDING LIGT ASSY SEAL", pn: "4199885", neo: "" },
+                    { desc: "LANDING LIGT ASSY SCREWS", pn: "NAS1102-3-11", neo: "" },
+                    { desc: "LANDING LT", pn: "Q4559X", neo: "" },
+                    { desc: "LANDING LT FLT DK SWITCH", pn: "E0028-92-0-0", neo: "" },
+                    { desc: "LAV DOME LT ASSY", pn: "2LA002692-02", neo: "" },
+                    { desc: "LAV DOME LT FIL", pn: "301", neo: "" },
+                    { desc: "LENS CAB PRESS", pn: "9EL408833-01", neo: "" },
+                    { desc: "LENS SLIDE LT", pn: "9EL404660-00", neo: "" },
+                    { desc: "LOGO LT", pn: "4626", neo: "" },
+                    { desc: "LOGO LT UNIT", pn: "1X2005097-00", neo: "" },
+                    { desc: "LOGO LT UNIT L/H (LED)", pn: "2LA456342-03", neo: "" },
+                    { desc: "LOGO LT UNIT R/H (LED)", pn: "2LA456342-04", neo: "" },
+                    { desc: "LOGO LT SEAL", pn: "9GD400759-00", neo: "" },
+                    { desc: "LOGO LT SCREWS", pn: "NAS1102E08-10P", neo: "" },
+                    { desc: "LOGO LIGHT CHANGE KIT", pn: "ABSLOGOLIGHTKIT1", neo: "" },
+                    { desc: "MAP/CHART LT (LED)", pn: "2LA408353-80", neo: "" },
+                    { desc: "MAP/CHART LT CRIMP", pn: "DAN387-01", neo: "" },
+                    { desc: "MAP/CHART LT KNOB", pn: "9SK406361-10:D8095", neo: "" },
+                    { desc: "NAV LT ASSY LEFT", pn: "528-80", neo: "" },
+                    { desc: "NAV LT ASSY LEFT (LED)", pn: "72325240-1", neo: "" },
+                    { desc: "NAV LT ASSY RIGHT", pn: "528-70", neo: "" },
+                    { desc: "NAV LT ASSY RIGHT (LED)", pn: "72303102-6", neo: "" },
+                    { desc: "NAV LT GLASS CVR SCREWS", pn: "NAS1581K4RS", neo: "" },
+                    { desc: "NAV LT ASSY REAR", pn: "2LA403702-01", neo: "" },
+                    { desc: "NAV LT FIL FWD", pn: "CM8A1033", neo: "" },
+                    { desc: "NAV LT FIL REAR (TAIL)", pn: "8GH005597-12", neo: "" },
+                    { desc: "NAV/LOGO TOGGLE SW", pn: "E0062A0S4BJOA", neo: "" },
+                    { desc: "N/GEAR PRK BRAKE LIGHT FIL", pn: "327", neo: "" },
+                    { desc: "N/GEAR PRK BRAKE LIGHT FIL (LED)", pn: "236-046-93", neo: "" },
+                    { desc: "P1/P2 READING LIGHT FILAMENT", pn: "8GH004554-28", neo: "" },
+                    { desc: "P1 & P2 TABLE LIGHT KNOB", pn: "9SK406361-10:D8095", neo: "" },
+                    { desc: "P1 PFD/ND SW LT PNL", pn: "002109-02", neo: "" },
+                    { desc: "P1+P2 TABLE LIGHT", pn: "E0510-01 or 1044-06", neo: "" },
+                    { desc: "P2 PFD/ND SW LT PNL", pn: "002111-02", neo: "" },
+                    { desc: "PARK BRK LT BOX ON NOSE LEG", pn: "D23119751", neo: "" },
+                    { desc: "PARK BRK LT AMBER CVR", pn: "004S", neo: "" },
+                    { desc: "PARK BRAKE LIGHT FIL", pn: "327", neo: "" },
+                    { desc: "PARK BRAKE LIGHT FIL (LED)", pn: "236-046-93", neo: "" },
+                    { desc: "PARK BRAKE LIGHT ELEC BOX", pn: "D23354000-2", neo: "" },
+                    { desc: "PINS", pn: "NSA937910EA2000", neo: "" },
+                    { desc: "RDG LT ASSY", pn: "9EL408200-06", neo: "" },
+                    { desc: "RDG LT FIL", pn: "8GH005678-06", neo: "" },
+                    { desc: "READING LT LENS", pn: "9EL411135-00", neo: "" },
+                    { desc: "READING LT LENS (CREW SEAT)", pn: "9EL411556-02", neo: "" },
+                    { desc: "READING LTS", pn: "8GH003912-06", neo: "" },
+                    { desc: "READING LTS (Y SER LED)", pn: "2LA455962-01", neo: "" },
+                    { desc: "READING LT FUSES", pn: "8JS403061-02", neo: "" },
+                    { desc: "REAR NAV LT FILAMENT", pn: "8GH005597-12", neo: "" },
+                    { desc: "REAR NAV LT ASSY", pn: "2LA403700-01", neo: "" },
+                    { desc: "REAR NAV LT INNER LENS CVR", pn: "9EL095528-10", neo: "" },
+                    { desc: "REAR NAV LT PWR SUPPLY", pn: "8ES005304-00", neo: "" },
+                    { desc: "REAR NAV LT TXMR", pn: "8ES403703-02", neo: "" },
+                    { desc: "RED LENS CVR", pn: "BR9644-22", neo: "" },
+                    { desc: "REFUEL PL FLOOD LT", pn: "2LA005482-00", neo: "" },
+                    { desc: "REFUEL PNL FLOOD LT FIL", pn: "303", neo: "" },
+                    { desc: "RET L/L ASSY", pn: "4315542", neo: "" },
+                    { desc: "RET L/L ELBOW", pn: "ABS0522-14P", neo: "" },
+                    { desc: "RET LL PLUG", pn: "E0052N14B12SNE", neo: "" },
+                    { desc: "RUBBER BOOT", pn: "001119-201-02", neo: "" },
+                    { desc: "SIDE WALL/ROOF TUBES", pn: "TLD30W25", neo: "" },
+                    { desc: "SIDE WALL/ROOF BALLAST UNIT", pn: "3250-81", neo: "" },
+                    { desc: "SIDEWALL LIGHT NORM (LED)", pn: "2LA456395-63", neo: "" },
+                    { desc: "SIDEWALL LIGHT SHORT (LED)", pn: "2LA456395-61", neo: "" },
+                    { desc: "SIDEWALL LIGHT NORM (LED)", pn: "2LA456395-13", neo: "" },
+                    { desc: "SIDEWALL LIGHT SHORT (LED)", pn: "2LA456395-11", neo: "" },
+                    { desc: "SMOKING/SEATBELT SIGN (LED)", pn: "F1000630-05", neo: "" },
+                    { desc: "STROBE CABLE LH", pn: "D9434001100100", neo: "" },
+                    { desc: "STROBE CABLE RH", pn: "D9434001000100", neo: "" },
+                    { desc: "STROBE LT PWR SUPPLY", pn: "8ES005309-00", neo: "" },
+                    { desc: "STROBE LT ASSY", pn: "2LA005308-05", neo: "" },
+                    { desc: "STROBE LT ASSY (REAR)", pn: "2LA005303-05", neo: "" },
+                    { desc: "TABLE LT FILS", pn: "1044-06", neo: "" },
+                    { desc: "TABLE LT UNITS", pn: "2LA005543-10", neo: "" },
+                    { desc: "TABLE FIT RUBBER SURROUND", pn: "9GD408487-00", neo: "" },
+                    { desc: "TABLE LT CONTROL KNOB/BUTTON", pn: "9SK406361-01", neo: "" },
+                    { desc: "TAKE OFF LT", pn: "Q4559X", neo: "" },
+                    { desc: "TAKE OFF LT ASSY", pn: "4233488", neo: "" },
+                    { desc: "TAXI LT", pn: "Q4554", neo: "" },
+                    { desc: "TAXI LT ASSY (SBU)", pn: "4236564", neo: "" },
+                    { desc: "TAXI LT ASSY (LED)", pn: "2LA456292-01", neo: "" },
+                    { desc: "TLT LT EXCEPT UXJ-UXM -41", pn: "2LA456395-91", neo: "" },
+                    { desc: "TLT VACANT LT (LED)", pn: "F1000342-00", neo: "" },
+                    { desc: "TUBES ROOF & WALL", pn: "TLD30W840", neo: "" },
+                    { desc: "TURN OFF LT", pn: "4626", neo: "" },
+                    { desc: "TURN OFF LT UNIT", pn: "4236534", neo: "" },
+                    { desc: "WING SCAN FILAMENT", pn: "4594", neo: "" },
+                    { desc: "WING SCAN UNIT R/H", pn: "4383137", neo: "" },
+                    { desc: "SAFETY GLOW FLOOR PATH LIGHTING", pn: "SG8503", neo: "" },
+                    { desc: "LT BODY ASSY", pn: "E0423-01 OR E0423-01E", neo: "" },
+                    { desc: "NOT IN USE CAP", pn: "E0424W3 / ABS1436W0:FAPE3", neo: "" },
+                    { desc: "AVAIL CAP", pn: "E0424A3 / ABS1436B0:FAPE3", neo: "" },
+                    { desc: "COCKPIT CALL CAP", pn: "E0424B3 / ABS1436A0:FAPE3", neo: "" },
+                    { desc: "ADIRU/AEVC VENT CAP", pn: "E0424A3", neo: "" },
+                    { desc: "APU FIRE CAP", pn: "E0424R3E / ABS1436RO:FAPE3", neo: "" },
+                    { desc: "FIL FOR ABOVE", pn: "6034", neo: "" },
+                    { desc: "PRESS TO TEST SW", pn: "E0064-80-05-0", neo: "" }
+                ]
+            },
+            "34": {
+                title: "Navigation",
+                items: [
+                    { desc: "STBY ASI WHITE BUG", pn: "54010-931-1", neo: "" },
+                    { desc: "DIU", pn: "9213000", neo: "" },
+                    { desc: "ADIRU (GNADIRU)", pn: "465020-03030312", neo: "" },
+                    { desc: "STBY HORIZON", pn: "H321BHM1", neo: "" },
+                    { desc: "STATIC PLATE L&R", pn: "D201094", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-6", neo: "" },
+                    { desc: "PACKING", pn: "NAS1611-026", neo: "" },
+                    { desc: "TAT PROBE", pn: "102LA2AG", neo: "" },
+                    { desc: "SEAL", pn: "D3411002520000", neo: "" },
+                    { desc: "AOA SNSR", pn: "C16291AA", neo: "" },
+                    { desc: "SEAL", pn: "A9232075320000", neo: "" },
+                    { desc: "ADF AERIAL", pn: "615-2630-102", neo: "" },
+                    { desc: "WXR TXVR", pn: "066-50008-0405", neo: "" },
+                    { desc: "WXR CONTROL PNL", pn: "2041220-0426", neo: "" },
+                    { desc: "WXR SCANNER MOUNT", pn: "2041444-0404", neo: "" },
+                    { desc: "GLIDE SLOPE AERIAL", pn: "3105-89", neo: "" },
+                    { desc: "LOCALISER AERIAL", pn: "3106-89", neo: "" },
+                    { desc: "ATC CONTROL PNL", pn: "G6990-40 / G6992-24", neo: "" },
+                    { desc: "ATC XPDR", pn: "066-01127-1101", neo: "" },
+                    { desc: "ATC ANTENNA TOP", pn: "2406-89-03 / 2407-89-13", neo: "" },
+                    { desc: "ATC ANTENNA BTM", pn: "2406-89-03 / 2407-89-13", neo: "" },
+                    { desc: "STBY COMPASS", pn: "PGA0105W or 9650976003206", neo: "" },
+                    { desc: "STBY COMPASS", pn: "C5K", neo: "" },
+                    { desc: "FIL", pn: "ZV3335", neo: "" },
+                    { desc: "EGPWC", pn: "9650976003206206", neo: "" },
+                    { desc: "RAD ALT XCVR", pn: "9599-607-14942", neo: "" },
+                    { desc: "RAD ALT AERIAL", pn: "9599-607-12352", neo: "" },
+                    { desc: "VOR RCVR", pn: "066-50012-0202", neo: "" },
+                    { desc: "VOR ANTENNA", pn: "3108-89", neo: "" },
+                    { desc: "MMR (ILS & GPS)", pn: "TLS755-01-0101B", neo: "" },
+                    { desc: "LOC ANTENNA", pn: "3106-89", neo: "" },
+                    { desc: "GLIDE SLOPE ANTENNA", pn: "3105-89", neo: "" },
+                    { desc: "GPS ANTENNA", pn: "C17065AA", neo: "" },
+                    { desc: "RDDMI (A319)", pn: "63543-253-2", neo: "" },
+                    { desc: "RDDMI (A320)", pn: "63543-253-3", neo: "" }
+                ]
+            },
+            "35": {
+                title: "Oxygen",
+                items: [
+                    { desc: "OXY PNL RELEASE TL", pn: "99500036", neo: "" }
+                ]
+            },
+            "36": {
+                title: "Pneumatic",
+                items: [
+                    { desc: "BMC", pn: "785-002-7", neo: "" },
+                    { desc: "HP VALVE", pn: "6773E010000", neo: "" },
+                    { desc: "REG-PRESS XDCR", pn: "ZRA1990030", neo: "" },
+                    { desc: "PACKING", pn: "NAS1612-4", neo: "" },
+                    { desc: "APU/AIR CON BLEED SW", pn: "E0415C3LM001", neo: "" },
+                    { desc: "ENG BLEED SWITCH", pn: "E0415C3LM002", neo: "" }
+                ]
+            },
+            "38": {
+                title: "Water and Waste",
+                items: [
+                    { desc: "STRAINER TLT SINK", pn: "7600763", neo: "" },
+                    { desc: "TOILET ASSY (LAV A, superceded by 14330-004B1/-004C1)", pn: "14330-004A1", neo: "" },
+                    { desc: "TOILET ASSY (LAV D&E)", pn: "14330-004A2", neo: "" },
+                    { desc: "PACKING", pn: "MS9021-226", neo: "" },
+                    { desc: "TOILET WTR HEATER", pn: "24E507009G03", neo: "" },
+                    { desc: "TOILET TAP ASSY (LESS HOSE)", pn: "2980292100100", neo: "" },
+                    { desc: "BEV MAKER", pn: "64771-001-001", neo: "" },
+                    { desc: "DRAIN CLEANER", pn: "FKAKLEENX10L", neo: "" },
+                    { desc: "DRAINS MAST", pn: "4-60000H883-00", neo: "" },
+                    { desc: "GALLEY VENT VALVE", pn: "JMS2202-54", neo: "" }
+                ]
+            },
+            "44": {
+                title: "Cabin Systems",
+                items: []
+            },
+            "46": {
+                title: "Information Systems",
+                items: [
+                    { desc: "ASTU AIR TRAFFIC SERV UNIT (NEW ACARS)", pn: "LA2T0G20503B040", neo: "" },
+                    { desc: "ASTU AIR TRAFFIC SERV UNIT (NEW ACARS)", pn: "LA2T0G20503B050", neo: "" }
+                ]
+            },
+            "47": {
+                title: "Inert Gas System",
+                items: []
+            },
+            "49": {
+                title: "Airborne Auxiliary Power",
+                items: [
+                    { desc: "OIL HEATER", pn: "3876145-1", neo: "" },
+                    { desc: "SEAL FOR ABOVE", pn: "M83248-1-132", neo: "" },
+                    { desc: "OIL DRAIN/MCD SEAL", pn: "M83248-1-907", neo: "" },
+                    { desc: "STARTER MOTOR", pn: "2704506-2", neo: "" },
+                    { desc: "SEAL", pn: "S9413-034", neo: "" },
+                    { desc: "IGV ACTUATOR", pn: "3886188-2", neo: "" },
+                    { desc: "SEALS", pn: "M25988-2-011 / -012 / -013", neo: "" },
+                    { desc: "LUB & GEN FILTER", pn: "3880938-1", neo: "" },
+                    { desc: "SEAL", pn: "M83248-1-227", neo: "" },
+                    { desc: "LOAD CONTROL VALVE", pn: "3291432-1", neo: "" },
+                    { desc: "SURGE CONTROL VALVE", pn: "3291238-2", neo: "" },
+                    { desc: "APU FUEL PUMP DC", pn: "C12CB0012", neo: "" },
+                    { desc: "PACKING", pn: "NSA8200-8", neo: "" },
+                    { desc: "APU/AIR CON BLEED SW", pn: "E0415C3LM001", neo: "" },
+                    { desc: "APU MSTR SW", pn: "E0415C3LM001", neo: "" },
+                    { desc: "APU START SW", pn: "E0415B3LM018", neo: "" },
+                    { desc: "AIR INTK FLP ACTR", pn: "106-1-1100-02", neo: "" },
+                    { desc: "APU", pn: "GTCP36-300A", neo: "" },
+                    { desc: "STARTER MOTOR (ALT)", pn: "2704506-1/2000866-", neo: "" },
+                    { desc: "PACKING", pn: "S9413-034", neo: "" },
+                    { desc: "APU GEN", pn: "5910047", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-260", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-115", neo: "" },
+                    { desc: "PACKING", pn: "96715216", neo: "" },
+                    { desc: "TERMNL COVER", pn: "5908681", neo: "" },
+                    { desc: "APU MASTER SW", pn: "ABS0951C3LM001:FAPE3", neo: "" }
+                ]
+            },
+            "52": {
+                title: "Doors",
+                items: [
+                    { desc: "CARGO DOOR VIEWING WINDOW", pn: "D5237124120200", neo: "" },
+                    { desc: "DOOR CAB PRES LT ASSY", pn: "2LA007307-00", neo: "" },
+                    { desc: "LENS CAB PRESS", pn: "9EL408833-01", neo: "" },
+                    { desc: "FILAMENT", pn: "8GS407969-00", neo: "" },
+                    { desc: "DOOR SLIDE ARM LT ASSY", pn: "2LA005469-00", neo: "" },
+                    { desc: "LENS SLIDE LT", pn: "9EL404660-00", neo: "" },
+                    { desc: "FILAMENT", pn: "8GS005632-28", neo: "" },
+                    { desc: "FLT DECK DOOR STRIKE (TOP/BOT)", pn: "AR4714-201", neo: "" },
+                    { desc: "FLT DECK DOOR STRIKE (MIDDLE)", pn: "AR4714-11", neo: "" }
+                ]
+            },
+            "56": {
+                title: "Windows",
+                items: [
+                    { desc: "LEFT WINDSHIELD", pn: "06282", neo: "" },
+                    { desc: "RIGHT WINDSHIELD", pn: "06283", neo: "" },
+                    { desc: "LEFT FIXED WINDOW", pn: "SPSA320-5-1-1", neo: "" },
+                    { desc: "LEFT FIXED WINDOW", pn: "SPSA320-5-2-2", neo: "" },
+                    { desc: "RIGHT FIXED WINDOW", pn: "SPSA320-6-1-1", neo: "" },
+                    { desc: "RIGHT FIXED WINDOW", pn: "SPSA320-6-2-2", neo: "" },
+                    { desc: "LEFT SLIDING WINDOW", pn: "SPSA320-3-1-1", neo: "" },
+                    { desc: "LEFT SLIDING WINDOW", pn: "SPSA320-3-3-2", neo: "" },
+                    { desc: "RIGHT SLIDING WINDOW", pn: "SPSA320-4-1-1", neo: "" },
+                    { desc: "RIGHT SLIDING WINDOW", pn: "SPSA320-4-3-2", neo: "" }
+                ]
+            },
+            "70": {
+                title: "Engine",
+                items: []
+            },
+            "71": {
+                title: "Power Plant",
+                items: []
+            },
+            "72": {
+                title: "Engine",
+                items: [
+                    { desc: "DIAGNOSTIC MCDS", pn: "4-211004-7:BAW251A", neo: "" }
+                ]
+            },
+            "73": {
+                title: "Engine Fuel and Control",
+                items: [
+                    { desc: "EEC", pn: "824972-2-008", neo: "" },
+                    { desc: "EEC", pn: "808050-4-044", neo: "" },
+                    { desc: "EEC", pn: "808050-4-042", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-905", neo: "" },
+                    { desc: "PACKING", pn: "AS43003-907", neo: "" },
+                    { desc: "PACKING", pn: "AS43003-906", neo: "" },
+                    { desc: "PACKING", pn: "M83248-1-904", neo: "" },
+                    { desc: "ENG DEDICATED GEN", pn: "430153", neo: "" },
+                    { desc: "SEAL", pn: "AS43013-153", neo: "" },
+                    { desc: "EIU", pn: "3957985205", neo: "" }
+                ]
+            },
+            "74": {
+                title: "Ignition",
+                items: []
+            },
+            "75": {
+                title: "Air",
+                items: [
+                    { desc: "ENG BLEED SWITCH", pn: "E0415C3LM002", neo: "" }
+                ]
+            },
+            "76": {
+                title: "Engine Controls",
+                items: []
+            },
+            "77": {
+                title: "Engine Indicating",
+                items: []
+            },
+            "78": {
+                title: "Exhaust",
+                items: []
+            },
+            "79": {
+                title: "Oil",
+                items: []
+            },
+            "80": {
+                title: "Starting",
+                items: []
+            }
+        };
+
         let currentView = 'splash';
         let selectedChapterKey = null;
         let selectedMELChapterKey = null;
         let selectedMELItemIndex = null;
+        let selectedPNChapterKey = null;
+        let selectedPNItemIndex = null;
 
         const splashScreen = document.getElementById('splash-screen');
         const homeContainer = document.getElementById('home-container');
@@ -2549,6 +3754,14 @@
         const melDetailView = document.getElementById('mel-detail-view');
         const melDetailHeading = document.getElementById('mel-detail-heading');
         const melDetailContainer = document.getElementById('mel-detail-container');
+        const pnHomeView = document.getElementById('pn-home-view');
+        const pnChaptersGrid = document.getElementById('pn-chapters-grid');
+        const pnItemsView = document.getElementById('pn-items-view');
+        const pnItemsHeading = document.getElementById('pn-items-heading');
+        const pnItemsList = document.getElementById('pn-items-list');
+        const pnDetailView = document.getElementById('pn-detail-view');
+        const pnDetailHeading = document.getElementById('pn-detail-heading');
+        const pnDetailContainer = document.getElementById('pn-detail-container');
         const issuesView = document.getElementById('issues-view');
         const detailView = document.getElementById('detail-view');
         const backBtn = document.getElementById('back-btn');
@@ -2567,6 +3780,9 @@
             melHomeView.style.display = 'none';
             melItemsView.style.display = 'none';
             melDetailView.style.display = 'none';
+            pnHomeView.style.display = 'none';
+            pnItemsView.style.display = 'none';
+            pnDetailView.style.display = 'none';
             issuesView.style.display = 'none';
             detailView.style.display = 'none';
         }
@@ -2612,6 +3828,12 @@
             // of the standard issues list.
             if (chapter.isMEL) {
                 openMELHome();
+                return;
+            }
+
+            // The Part Numbers card routes into its own three-level index too.
+            if (chapter.isPN) {
+                openPNHome();
                 return;
             }
 
@@ -2724,6 +3946,173 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // ---------- Part Numbers navigation ----------
+
+        function openPNHome() {
+            currentView = 'pn-home';
+            appTitle.textContent = 'Part Numbers';
+            pnChaptersGrid.innerHTML = '';
+
+            Object.keys(partNumberDatabase).forEach(ataCode => {
+                const chapter = partNumberDatabase[ataCode];
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openPNChapter(ataCode);
+                card.innerHTML = `
+                    <div class="card-code">ATA ${ataCode}</div>
+                    <div class="card-title">${chapter.title}</div>
+                    <div class="card-count">${chapter.items.length} part${chapter.items.length === 1 ? '' : 's'}</div>
+                `;
+                pnChaptersGrid.appendChild(card);
+            });
+
+            hideAllViews();
+            pnHomeView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function pnRowSubtitle(item) {
+            const pn = (item.pn || '').trim();
+            const neo = (item.neo || '').trim();
+            if (pn && neo && pn !== neo) return `CEO: ${pn}  ·  NEO: ${neo}`;
+            if (pn) return pn;
+            if (neo) return `NEO: ${neo}`;
+            return 'No part number listed';
+        }
+
+        function openPNChapter(ataCode) {
+            const chapter = partNumberDatabase[ataCode];
+            if (!chapter) return;
+
+            selectedPNChapterKey = ataCode;
+            currentView = 'pn-items';
+            appTitle.textContent = `PN ${ataCode}`;
+            pnItemsHeading.textContent = `ATA ${ataCode}: ${chapter.title}`;
+
+            pnItemsList.innerHTML = '';
+            if (chapter.items.length === 0) {
+                pnItemsList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No part numbers logged yet for this chapter.</div>';
+            } else {
+                chapter.items.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'issue-row';
+                    row.onclick = () => openPNItemDetail(ataCode, index);
+                    row.innerHTML = `
+                        <div>
+                            <div class="issue-title">${item.desc}</div>
+                            <div class="issue-subtitle" style="font-family: ui-monospace, monospace;">${pnRowSubtitle(item)}</div>
+                        </div>
+                        <div class="chevron">›</div>
+                    `;
+                    pnItemsList.appendChild(row);
+                });
+            }
+
+            hideAllViews();
+            pnItemsView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openPNItemDetail(ataCode, index) {
+            const chapter = partNumberDatabase[ataCode];
+            const item = chapter.items[index];
+
+            selectedPNChapterKey = ataCode;
+            selectedPNItemIndex = index;
+            currentView = 'pn-detail';
+            appTitle.textContent = `PN ${ataCode}`;
+            pnDetailHeading.textContent = item.desc;
+
+            const pn = (item.pn || '').trim();
+            const neo = (item.neo || '').trim();
+            const hasCeo = pn !== '';
+            const hasNeo = neo !== '';
+            const sameForBoth = hasCeo && hasNeo && pn === neo;
+
+            const metaLines = [];
+            if (item.qty) metaLines.push(`Qty: ${item.qty}`);
+            if (item.ipc) metaLines.push(`IPC Ref: ${item.ipc}`);
+            if (item.mm) metaLines.push(`MM Ref: ${item.mm}`);
+            if (item.notes) metaLines.push(`Notes: ${item.notes}`);
+            const metaHtml = metaLines.length ? `
+                <div class="detail-card">
+                    <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.4rem;">Additional Reference</div>
+                    <div class="general-notes">${metaLines.join('\\n')}</div>
+                </div>` : '';
+
+            let variantHtml;
+            if (sameForBoth) {
+                variantHtml = `
+                    <div class="detail-card">
+                        <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.4rem;">Part Number (CEO &amp; NEO)</div>
+                        <div class="general-notes" style="font-family: ui-monospace, monospace;">${pn}</div>
+                    </div>
+                `;
+            } else if (hasCeo && hasNeo) {
+                variantHtml = `
+                    <div class="variant-toggle-container two-col">
+                        <button class="toggle-btn ceo-btn" id="pn-ceo-toggle" onclick="togglePNVariant('ceo')">CEO Part Number</button>
+                        <button class="toggle-btn neo-btn" id="pn-neo-toggle" onclick="togglePNVariant('neo')">NEO Part Number</button>
+                    </div>
+                    <div class="accordion-content ceo" id="pn-ceo-content">
+                        <div class="accordion-title">CEO Part Number</div>
+                        <div class="accordion-body" style="font-family: ui-monospace, monospace;">${pn}</div>
+                    </div>
+                    <div class="accordion-content neo" id="pn-neo-content">
+                        <div class="accordion-title">NEO Part Number</div>
+                        <div class="accordion-body" style="font-family: ui-monospace, monospace;">${neo}</div>
+                    </div>
+                `;
+            } else if (hasCeo) {
+                variantHtml = `
+                    <div class="detail-card">
+                        <div style="font-size: 0.8rem; font-weight: 600; color: var(--ceo-accent); text-transform: uppercase; margin-bottom: 0.4rem;">CEO Part Number</div>
+                        <div class="general-notes" style="font-family: ui-monospace, monospace;">${pn}</div>
+                    </div>
+                `;
+            } else if (hasNeo) {
+                variantHtml = `
+                    <div class="detail-card">
+                        <div style="font-size: 0.8rem; font-weight: 600; color: var(--neo-accent); text-transform: uppercase; margin-bottom: 0.4rem;">NEO Part Number</div>
+                        <div class="general-notes" style="font-family: ui-monospace, monospace;">${neo}</div>
+                    </div>
+                `;
+            } else {
+                variantHtml = `
+                    <div class="detail-card">
+                        <div class="general-notes">No part number listed for this item in the source data.</div>
+                    </div>
+                `;
+            }
+
+            pnDetailContainer.innerHTML = variantHtml + metaHtml;
+
+            hideAllViews();
+            pnDetailView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function togglePNVariant(variant) {
+            const ceoBtn = document.getElementById('pn-ceo-toggle');
+            const neoBtn = document.getElementById('pn-neo-toggle');
+            const ceoContent = document.getElementById('pn-ceo-content');
+            const neoContent = document.getElementById('pn-neo-content');
+
+            if (variant === 'ceo' && ceoBtn && ceoContent) {
+                ceoBtn.classList.toggle('active');
+                ceoContent.classList.toggle('open');
+            } else if (variant === 'neo' && neoBtn && neoContent) {
+                neoBtn.classList.toggle('active');
+                neoContent.classList.toggle('open');
+            }
+        }
+
         // ---------- ATA chapter (non-MEL) navigation ----------
 
         function openIssueDetail(code, index) {
@@ -2824,6 +4213,12 @@
                 openMELHome();
             } else if (currentView === 'mel-home') {
                 goHome();
+            } else if (currentView === 'pn-detail') {
+                openPNChapter(selectedPNChapterKey);
+            } else if (currentView === 'pn-items') {
+                openPNHome();
+            } else if (currentView === 'pn-home') {
+                goHome();
             }
         }
 
@@ -2856,6 +4251,23 @@
                         ch.items.some(it => it.name.toLowerCase().includes(q) || it.num.toLowerCase().includes(q))
                     );
                     if (code.toLowerCase().includes(q) || data.title.toLowerCase().includes(q) || melMatch) {
+                        filtered[code] = data;
+                    }
+                    continue;
+                }
+
+                if (data.isPN) {
+                    // Search part descriptions and part numbers too; surface
+                    // the Part Numbers card itself if anything inside it matches.
+                    const pnMatch = Object.values(partNumberDatabase).some(ch =>
+                        ch.title.toLowerCase().includes(q) ||
+                        ch.items.some(it =>
+                            it.desc.toLowerCase().includes(q) ||
+                            (it.pn || '').toLowerCase().includes(q) ||
+                            (it.neo || '').toLowerCase().includes(q)
+                        )
+                    );
+                    if (code.toLowerCase().includes(q) || data.title.toLowerCase().includes(q) || pnMatch) {
                         filtered[code] = data;
                     }
                     continue;
