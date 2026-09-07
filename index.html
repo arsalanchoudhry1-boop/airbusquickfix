@@ -341,6 +341,58 @@
             margin-bottom: 0.75rem;
         }
 
+        .mel-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .mel-meta strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .mel-meta + .mel-meta {
+            margin-top: 0.4rem;
+        }
+
+        .mel-variant-header {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .mel-variant-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .mel-variant-table div {
+            background-color: rgba(191, 90, 242, 0.08);
+            border-radius: 8px;
+            padding: 0.5rem 0.4rem;
+            text-align: center;
+        }
+
+        .mel-variant-table span {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+        }
+
+        .mel-variant-table strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--mel-accent);
+            font-weight: 700;
+        }
+
         .variant-toggle-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -1058,110 +1110,206 @@
             "21": {
                 title: "Air Conditioning",
                 items: [
-                    { num: "21-00-01", name: "PACK 1(2) MAINTENANCE MESSAGE", notes: "Refer to current MEL Item 21-00-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-00-02", name: "ZONE CONT MAINTENANCE MESSAGE", notes: "Refer to current MEL Item 21-00-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-00-03", name: "AFT CRG HEAT MAINTENANCE MESSAGE", notes: "Refer to current MEL Item 21-00-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-00-04", name: "TEMP CTL 1(2) MAINTENANCE MESSAGE", notes: "Refer to current MEL Item 21-00-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-00-05", name: "CPC 1(2) MAINTENANCE MESSAGE", notes: "Refer to current MEL Item 21-00-05 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-01-01", name: "PACK PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-01-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-01-02", name: "PACK PB-SW OFF LIGHT", notes: "Refer to current MEL Item 21-01-01-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-01-03", name: "HOT AIR PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-01-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-01-04", name: "HOT AIR PB-SW OFF LIGHT", notes: "Refer to current MEL Item 21-01-01-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-02-01", name: "CABIN PRESS MODE SEL PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-02-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-03-02", name: "AFT ISOL VALVE PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-03-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-04-01", name: "CAB FANS PB-SW OFF LIGHT", notes: "Refer to current MEL Item 21-01-04-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-04-02", name: "BLOWER PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-04-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-04-03", name: "BLOWER PB-SW OVRD LIGHT", notes: "Refer to current MEL Item 21-01-04-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-04-04", name: "EXTRACT PB-SW FAULT LIGHT", notes: "Refer to current MEL Item 21-01-04-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-01-04-05", name: "EXTRACT PB-SW OVRD LIGHT", notes: "Refer to current MEL Item 21-01-04-05 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-01", name: "PACK OUTLET TEMPERATURE INDICATION ON THE BLEED SD PAGE", notes: "Refer to current MEL Item 21-07-01-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-02", name: "PACK TURBINE BYPASS VALVE POSITION INDICATION ON THE BLEED SD PAGE", notes: "Refer to current MEL Item 21-07-01-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-03", name: "SD PAGE", notes: "Refer to current MEL Item 21-07-01-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-04", name: "PACK FLOW INDICATION ON THE BLEED SD PAGE", notes: "Refer to current MEL Item 21-07-01-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-05", name: "PACK FLOW CONTROL VALVE POSITION INDICATION ON THE BLEED SD PAGE", notes: "Refer to current MEL Item 21-07-01-05 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-01-06", name: "EMERGENCY RAM AIR INLET INDICATION ON THE BLEED SD PAGE", notes: "Refer to current MEL Item 21-07-01-06 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-02-01", name: "INLET AND EXTRACT INDICATIONS ON THE CAB PRESS SD PAGE", notes: "Refer to current MEL Item 21-07-02-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-02-02", name: "PRESSURE SAFETY VALVES POSITION INDICATION ON THE CAB PRESS SD PAGE", notes: "Refer to current MEL Item 21-07-02-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-02-03", name: "PACK 1 AND 2 INDICATIONS ON THE CAB PRESS SD PAGE", notes: "Refer to current MEL Item 21-07-02-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-03-01", name: "H7", notes: "Refer to current MEL Item 21-07-03-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-03-02", name: "H8", notes: "Refer to current MEL Item 21-07-03-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-04-01", name: "H9", notes: "Refer to current MEL Item 21-07-04-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-07-04-02", name: "LOWER DECK CARGO TEMPERATURE INDICATIONS ON THE CRUISE SD PAGE", notes: "Refer to current MEL Item 21-07-04-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-09-01", name: "VENT BLOWER FAULT ALERT", notes: "Refer to current MEL Item 21-09-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-09-01A", name: "VENT BLOWER FAULT ALERT", notes: "Refer to current MEL Item 21-09-01A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-09-02", name: "VENT EXTRACT FAULT ALERT", notes: "Refer to current MEL Item 21-09-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-09-02A", name: "VENT EXTRACT FAULT ALERT", notes: "Refer to current MEL Item 21-09-02A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-09-03", name: "CAB PR SAFETY VALVE OPEN ALERT", notes: "Refer to current MEL Item 21-09-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-21-01", name: "CABIN FAN", notes: "Refer to current MEL Item 21-21-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-21-01A", name: "CABIN FAN", notes: "Refer to current MEL Item 21-21-01A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-23-01", name: "LAVATORY AND GALLEY EXTRACTION FAN", notes: "Refer to current MEL Item 21-23-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-23-01D", name: "LAVATORY AND GALLEY EXTRACTION FAN", notes: "Refer to current MEL Item 21-23-01D in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-01", name: "AVIONICS BLOWER FAN", notes: "Refer to current MEL Item 21-26-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-01A", name: "AVIONICS BLOWER FAN (VENT AVNCS SYS FAULT ALERT NOT DISPLAYED)", notes: "Refer to current MEL Item 21-26-01A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-01B", name: "EACH FLIGHT)", notes: "Refer to current MEL Item 21-26-01B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-01C", name: "FLIGHT)", notes: "Refer to current MEL Item 21-26-01C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-02", name: "AVIONICS EXTRACT FAN", notes: "Refer to current MEL Item 21-26-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-02A", name: "AVIONICS EXTRACT FAN (VENT AVNCS SYS FAULT ALERT NOT DISPLAYED)", notes: "Refer to current MEL Item 21-26-02A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-02B", name: "EACH FLIGHT)", notes: "Refer to current MEL Item 21-26-02B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-02C", name: "FLIGHT)", notes: "Refer to current MEL Item 21-26-02C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-03", name: "AVIONICS SKIN EXCHANGER INLET BYPASS VALVE", notes: "Refer to current MEL Item 21-26-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-03A", name: "AVIONICS SKIN EXCHANGER INLET BYPASS VALVE", notes: "Refer to current MEL Item 21-26-03A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-04", name: "AVIONICS SKIN AIR OUTLET VALVE", notes: "Refer to current MEL Item 21-26-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-04A", name: "AVIONICS SKIN AIR OUTLET VALVE", notes: "Refer to current MEL Item 21-26-04A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-05", name: "AVIONICS SKIN AIR INLET VALVE", notes: "Refer to current MEL Item 21-26-05 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-05A", name: "GROUND)", notes: "Refer to current MEL Item 21-26-05A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-05B", name: "OPEN POSITION)", notes: "Refer to current MEL Item 21-26-05B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-06", name: "AVIONICS SKIN EXCHANGER ISOLATION VALVE", notes: "Refer to current MEL Item 21-26-06 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-06B", name: "AVIONICS SKIN EXCHANGER ISOLATION VALVE", notes: "Refer to current MEL Item 21-26-06B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-07", name: "AVIONICS SKIN EXCHANGER OUTLET BYPASS VALVE", notes: "Refer to current MEL Item 21-26-07 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-08", name: "AVIONICS AIR CONDITIONING INLET VALVE", notes: "Refer to current MEL Item 21-26-08 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-08A", name: "AVIONICS AIR CONDITIONING INLET VALVE", notes: "Refer to current MEL Item 21-26-08A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-09", name: "AVIONICS VENTILATION FILTER", notes: "Refer to current MEL Item 21-26-09 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-09A", name: "DISPLAYED)", notes: "Refer to current MEL Item 21-26-09A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-09B", name: "BEFORE EACH FLIGHT)", notes: "Refer to current MEL Item 21-26-09B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-09C", name: "EACH FLIGHT)", notes: "Refer to current MEL Item 21-26-09C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-10", name: "AVIONICS EQUIPMENT VENTILATION COMPUTER (AEVC)", notes: "Refer to current MEL Item 21-26-10 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-26-10A", name: "AVIONICS EQUIPMENT VENTILATION COMPUTER (AEVC)", notes: "Refer to current MEL Item 21-26-10A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-28-03", name: "AFT CARGO EXTRACTION FAN", notes: "Refer to current MEL Item 21-28-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-28-03A", name: "AFT CARGO EXTRACTION FAN", notes: "Refer to current MEL Item 21-28-03A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-28-04", name: "AFT CARGO ISOLATION VALVE", notes: "Refer to current MEL Item 21-28-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-28-04A", name: "AFT CARGO ISOLATION VALVE (VALVES CHECKED CLOSED)", notes: "Refer to current MEL Item 21-28-04A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-28-04B", name: "AFT CARGO ISOLATION VALVE (VALVES DEACTIVATED CLOSED)", notes: "Refer to current MEL Item 21-28-04B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-01", name: "CHANNEL)", notes: "Refer to current MEL Item 21-31-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-01B", name: "CHANNEL)", notes: "Refer to current MEL Item 21-31-01B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-02", name: "OUTFLOW VALVE MAN CHANNEL)", notes: "Refer to current MEL Item 21-31-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-03", name: "PRESSURE SAFETY VALVE", notes: "Refer to current MEL Item 21-31-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-04", name: "LANDING ELEVATION SELECTION AUTO FUNCTION", notes: "Refer to current MEL Item 21-31-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-04A", name: "LANDING ELEVATION SELECTION AUTO FUNCTION", notes: "Refer to current MEL Item 21-31-04A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-05", name: "LANDING ELEVATION SELECTION MAN FUNCTION", notes: "Refer to current MEL Item 21-31-05 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-31-05A", name: "LANDING ELEVATION SELECTION MAN FUNCTION", notes: "Refer to current MEL Item 21-31-05A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-43-02", name: "AFT CARGO COMPARTMENT HEATING", notes: "Refer to current MEL Item 21-43-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-43-02A", name: "AFT CARGO COMPARTMENT HEATING (HEATING SYSTEM SET TO OFF)", notes: "Refer to current MEL Item 21-43-02A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-43-02B", name: "CLOSED POSITION)", notes: "Refer to current MEL Item 21-43-02B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-51-01", name: "PACK FLOW CONTROL VALVE", notes: "Refer to current MEL Item 21-51-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-51-02", name: "PACK FLOW SELECTION", notes: "Refer to current MEL Item 21-51-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-51-03", name: "PACK FLOW SENSOR", notes: "Refer to current MEL Item 21-51-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-51-03A", name: "PACK FLOW SENSOR", notes: "Refer to current MEL Item 21-51-03A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-52-01", name: "AIR CONDITIONING PACK", notes: "Refer to current MEL Item 21-52-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-52-01E", name: "AIR CONDITIONING PACK (ONE AIR CONDITIONING PACK INOPERATIVE)", notes: "Refer to current MEL Item 21-52-01E in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-52-01F", name: "AIR CONDITIONING PACK (ONE AIR CONDITIONING PACK INOPERATIVE)", notes: "Refer to current MEL Item 21-52-01F in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-52-01G", name: "COOLING MODE ONLY)", notes: "Refer to current MEL Item 21-52-01G in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-52-02", name: "AIR CONDITIONING PACK RAM AIR INLET FLAP", notes: "Refer to current MEL Item 21-52-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-55-01", name: "EMERGENCY RAM AIR INLET", notes: "Refer to current MEL Item 21-55-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-61-01", name: "PACK TURBINE BYPASS VALVE", notes: "Refer to current MEL Item 21-61-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-61-02", name: "PACK CONTROLLER PRIMARY CHANNEL", notes: "Refer to current MEL Item 21-61-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-61-02A", name: "PACK CONTROLLER PRIMARY CHANNEL", notes: "Refer to current MEL Item 21-61-02A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-01", name: "ZONE CONTROLLER CHANNEL", notes: "Refer to current MEL Item 21-63-01 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-01A", name: "ZONE CONTROLLER CHANNEL (PRIMARY CHANNEL INOPERATIVE)", notes: "Refer to current MEL Item 21-63-01A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-01C", name: "ZONE CONTROLLER CHANNEL (BOTH CHANNELS INOPERATIVE)", notes: "Refer to current MEL Item 21-63-01C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-02", name: "COCKPIT AND CABIN TRIM AIR VALVE", notes: "Refer to current MEL Item 21-63-02 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-02C", name: "CHECKED CLOSED)", notes: "Refer to current MEL Item 21-63-02C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-02D", name: "POSITION)", notes: "Refer to current MEL Item 21-63-02D in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-03", name: "HOT AIR PRESSURE REGULATING VALVE", notes: "Refer to current MEL Item 21-63-03 in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-03A", name: "CLOSED)", notes: "Refer to current MEL Item 21-63-03A in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-03B", name: "HOT AIR PRESSURE REGULATING VALVE (TRIM AIR VALVE CHECKED CLOSED)", notes: "Refer to current MEL Item 21-63-03B in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-03C", name: "POSITION)", notes: "Refer to current MEL Item 21-63-03C in the controlled manual for dispatch conditions, limitations, and procedures." },
-                    { num: "21-63-04", name: "AIR CONDITIONING SYSTEM CONTROLLER CHANNEL (COND CTL 1(2)-A(B))", notes: "Refer to current MEL Item 21-63-04 in the controlled manual for dispatch conditions, limitations, and procedures." },
+                    { num: "21-00-01", name: "PACK 1(2) MAINTENANCE Message", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, A319, A320, A321", variants: [{ letter: "A", repair: "C", installed: "-", required: "-", placard: "No", remark: "PACK 1(2) MAINTENANCE message may be displayed on the STATUS SDpage." }] }
+                    ] },
+                    { num: "21-00-02", name: "ZONE CONT MAINTENANCE Message", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, A319, A320, A321", variants: [{ letter: "A", repair: "C", installed: "-", required: "-", placard: "No", remark: "ZONE CONT MAINTENANCE message may be displayed on the STATUS SDpage." }] }
+                    ] },
+                    { num: "21-00-03", name: "AFT CRG HEAT MAINTENANCE Message", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0071", variants: [{ letter: "A", repair: "C", installed: "-", required: "-", placard: "No", remark: "AFT CRG HEAT MAINTENANCE message may be displayed on the STATUS SDpage." }] }
+                    ] },
+                    { num: "21-00-04", name: "TEMP CTL 1(2) MAINTENANCE Message", configs: [
+                        { applicable: "MSN 02441, 02694-13319", criteria: "K6443", variants: [{ letter: "A", repair: "C", installed: "-", required: "-", placard: "No", remark: "TEMP CTL 1(2) MAINTENANCE message may be displayed on the STATUS SDpage." }] }
+                    ] },
+                    { num: "21-00-05", name: "CPC 1(2) MAINTENANCE Message", configs: [
+                        { applicable: "MSN 05784-13319", criteria: "31-1511, 31-1574, 31-1575, K15280, P20466", variants: [{ letter: "A", repair: "C", installed: "-", required: "-", placard: "No", remark: "CPC 1(2) MAINTENANCE message may be displayed on the STATUS SDpage." }] }
+                    ] },
+                    { num: "21-01-01-01", name: "PACKpb-sw FAULTlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "Yes", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-01-01-02", name: "PACKpb-sw OFFlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "Yes", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-01-01-03", name: "HOT AIRpb-sw FAULTlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative provided that all zone duct temperature indications are operative on the COND SDpage." }] }
+                    ] },
+                    { num: "21-01-01-04", name: "HOT AIRpb-sw OFFlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-02-01", name: "CABIN PRESS MODE SELpb-sw FAULTlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-03-02", name: "AFT ISOL VALVEpb-sw FAULTlight", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0070", variants: [{ letter: "A", repair: "D", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-04-01", name: "CAB FANSpb-sw OFFlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-04-02", name: "BLOWERpb-sw FAULTlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-04-03", name: "BLOWERpb-sw OVRDlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-04-04", name: "EXTRACTpb-sw FAULTlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-01-04-05", name: "EXTRACTpb-sw OVRDlight", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-01", name: "Pack Outlet Temperature Indication on the BLEED SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-02", name: "Pack Turbine Bypass Valve Position Indication on the BLEED SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-03", name: "Pack Compressor Outlet Temperature Indication on the BLEED", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-04", name: "Pack Flow Indication on the BLEED SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-05", name: "Pack Flow Control Valve Position Indication on the BLEED SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-01-06", name: "Emergency Ram Air Inlet Indication on the BLEED SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-07-02-01", name: "INLET and EXTRACT Indications on the CAB PRESS SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-02-02", name: "Pressure Safety Valves Position Indication on the CAB PRESS SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(m)Pressure safety valves may be indicated open provided that both valves are visually checked closed. (m) Refer to AMM 21-31-00-040-004" }] }
+                    ] },
+                    { num: "21-07-02-03", name: "Pack 1 and 2 Indications on the CAB PRESS SDpage", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative." }] }
+                    ] },
+                    { num: "21-07-03-01", name: "Cockpit and Cabin Temperature Indications on the COND SDpage H7", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "-", required: "0", placard: "No", remark: "One or more indications may be inoperative." }] }
+                    ] },
+                    { num: "21-07-03-02", name: "Lower Deck Cargo Temperature Indications on the COND SDpage H8", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0071", variants: [{ letter: "A", repair: "D", installed: "-", required: "0", placard: "No", remark: "One or more may be inoperative provided that the heating system of the AFT lower deck cargo is considered inoperative. Refer to Item 21-43-02 AFT Cargo Compartment Heating" }] }
+                    ] },
+                    { num: "21-07-04-01", name: "Cockpit and Cabin Temperature Indications on the CRUISE SDpage H9", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "-", required: "0", placard: "No", remark: "One or more indications may be inoperative. H10" }] }
+                    ] },
+                    { num: "21-07-04-02", name: "Lower Deck Cargo Temperature Indications on the CRUISE SDpage H11", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0071", variants: [{ letter: "A", repair: "D", installed: "-", required: "0", placard: "No", remark: "One or more may be inoperative provided that the heating system of the AFT lower deck cargo is considered inoperative. Refer to Item 21-43-02 AFT Cargo Compartment Heating" }] }
+                    ] },
+                    { num: "21-09-01", name: "VENT BLOWER FAULT Alert", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "Blower fan operative", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be displayed provided that: 1) The blower fan is checked operative before each flight, and 2) The VENTAVNCS SYS FAULT alert is checked operative before each flight. (o) Refer to OpsProc 21-09-01A VENT BLOWER FAULT Alert (m) Refer to AMM Task 21-26-00-040-010" }, { letter: "B", label: "Blower fan inoperative", repair: "C", installed: "1", required: "0", placard: "No", remark: "May be displayed provided that the avionics blower fan is considered inoperative. Refer to Item 21-26-01 Avionics Blower Fan" }] }
+                    ] },
+                    { num: "21-09-02", name: "VENT EXTRACT FAULT Alert", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "Extract fan operative", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be displayed provided that: 1) The extract fan is checked operative before each flight, and 2) The VENTAVNCS SYS FAULT alert is checked operative before each flight. (o) Refer to OpsProc 21-09-02A VENT EXTRACT FAULT Alert (m) Refer to AMM Task 21-26-00-040-011" }, { letter: "B", label: "Extract fan inoperative", repair: "C", installed: "1", required: "0", placard: "No", remark: "May be displayed provided that the avionics extract fan is considered inoperative. Refer to Item 21-26-02 Avionics Extract Fan" }] }
+                    ] },
+                    { num: "21-09-03", name: "CAB PR SAFETY VALVE OPEN Alert", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(m)May be displayed provided that both safety valves are visually checked closed. (m) Refer to AMM 21-31-00-040-005" }] }
+                    ] },
+                    { num: "21-21-01", name: "Cabin Fan", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "Apply the operational procedure only in the case of continuous operation of the affected cabin fan, or in the case of \"burning smell\" associated with the inoperative cabin fan. (o) Refer to OpsProc 21-21-01A Cabin Fan", variants: [{ letter: "A", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be inoperative." }] }
+                    ] },
+                    { num: "21-23-01", name: "Lavatory and Galley Extraction Fan", configs: [
+                        { applicable: "ALL except MSN 01987", criteria: "K2335, SA", variants: [{ letter: "B", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o) May be inoperative provided that all duct temperatures indications for the cabin are operative on the COND SDpage. (o) Refer to OpsProc 21-23-01B Lavatory and Galley Extraction Fan" }] },
+                        { applicable: "MSN 01987", criteria: "44-1002, K2335, SA", variants: [{ letter: "D", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o) May be inoperative provided that: 1) All duct temperatures indications for the cabin are operative on the COND SDpage, and 2) The GSM ON BOARD system is deactivated. (o) Refer to OpsProc 21-23-01D Lavatory and Galley Extraction Fan" }] }
+                    ] },
+                    { num: "21-26-01", name: "Avionics Blower Fan", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operation, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "VENTAVNCS SYS FAULT not displayed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative provided that: 1) The BLOWERpb-sw is set to OVRD, and 2) Both air conditioning packs are operative, and 3) The VENTAVNCS SYS FAULT alert is not displayed. (o) Refer to OpsProc 21-26-01A Avionics Blower Fan (VENT AVNCS SYS FAULT Alert not displayed)" }, { letter: "B", label: "Air conditioning inlet valve checked open", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that: 1) The BLOWERpb-sw is set to OVRD, and 2) Both air conditioning packs are operative, and 3) The air conditioning inlet valve is checked open before each flight. (o) Refer to OpsProc 21-26-01B Avionics Blower Fan (Air conditioning inlet valve checked open before each flight) (m) Refer to AMM Task 21-26-00-040-006 Continued on the next page" }, { letter: "C", label: "Avionics ventilation system checked", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that: 1) The BLOWERpb-sw is set to OVRD, and 2) Both air conditioning packs are operative, and 3) The air conditioning inlet valve is secured in the open position, and 4) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-01C Avionics Blower Fan (Avionics ventilation system checked before each flight) (m) Refer to AMM Task 21-26-00-040-013" }] }
+                    ] },
+                    { num: "21-26-02", name: "Avionics Extract Fan", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operation, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "VENTAVNCS SYS FAULT not displayed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative provided that: 1) The blower fan is operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The VENTAVNCS SYS FAULT alert is not displayed. (o) Refer to OpsProc 21-26-02A Avionics Extract Fan (VENT AVNCS SYS FAULT Alert not displayed) Continued on the next page" }, { letter: "B", label: "Air conditioning inlet valve checked open", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that: 1) The blower fan is operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The air conditioning inlet valve is checked open before each flight. (o) Refer to OpsProc 21-26-02B Avionics Extract Fan (Air conditioning inlet valve checked open before each flight) (m) Refer to AMM Task 21-26-00-040-007" }, { letter: "C", label: "Avionics ventilation system checked", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that: 1) The blower fan is operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The air conditioning inlet valve is secured in the open position, and 5) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-02C Avionics Extract Fan (Avionics ventilation system checked before each flight) (m) Refer to AMM Task 21-26-00-040-015" }] }
+                    ] },
+                    { num: "21-26-03", name: "Avionics Skin Exchanger Inlet Bypass Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided. (o) Refer to OpsProc 21-26-03A Avionics Skin Exchanger Inlet Bypass Valve (m) Refer to AMM Task 21-26-00-040-001", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The avionics skin exchanger inlet bypass valve is manually secured in the closed position, and 2) The avionics ventilation system is checked before each flight." }] }
+                    ] },
+                    { num: "21-26-04", name: "Avionics Skin Air Outlet Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided. (o) Refer to OpsProc 21-26-04A Avionics Skin Air Outlet Valve (m) Refer to AMM Task 21-26-00-040-002", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The internal flap is manually secured in the open position, and 2) The skin air outlet valve is displayed in a partially open position amber or green on the CAB PRESS SDpage, and 3) Both air conditioning packs are operative, and 4) The skin exchanger isolation valve is secured in the open position, and 5) The avionics ventilation system is checked before each flight, and 6) The avionics smoke detection system is checked operative before each flight." }] }
+                    ] },
+                    { num: "21-26-05", name: "Avionics Skin Air Inlet Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "Air Conditioning Inlet Valve open on ground", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The avionics skin air inlet valve is manually secured in the closed position, and 2) The air conditioning inlet valve is open on ground, and 3) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-05A Avionics Skin Air Inlet Valve (Air conditioning inlet valve open on the ground) (m) Refer to AMM Task 21-26-00-040-004" }, { letter: "B", label: "Air Conditioning Inlet Valve Secured Open", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The avionics skin air inlet valve is manually secured in the closed position, and 2) The air conditioning inlet valve is secured in the open position, and 3) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-05B Avionics Skin Air Inlet Valve (Air conditioning inlet valve secured in the open position) (m) Refer to AMM Task 21-26-00-040-014" }] }
+                    ] },
+                    { num: "21-26-06", name: "Avionics Skin Exchanger Isolation Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "If the valve cannot be secured in the open position, it can be interchanged with the skin exchanger outlet bypass valve. 2) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-06B Avionics Skin Exchanger Isolation Valve (m) Refer to AMM Task 21-26-00-040-016", variants: [{ letter: "A", label: "Valve inoperative in the open position", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative in the open position provided that the avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-06A Avionics Skin Exchanger Isolation Valve (m) Refer to AMM Task 21-26-00-040-008" }, { letter: "B", label: "Valve secured open", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The avionics skin exchanger isolation valve is secured in the open position, and" }] }
+                    ] },
+                    { num: "21-26-07", name: "Avionics Skin Exchanger Outlet Bypass Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-26-08", name: "Avionics Air Conditioning Inlet Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided. (o) Refer to OpsProc 21-26-08A Avionics Air Conditioning Inlet Valve (m) Refer to AMM Task 21-26-00-040-003", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) The avionics air conditioning inlet valve is manually secured in the open position, and 2) Both air conditioning packs are operative, and 3) The avionics ventilation is checked before each flight." }] }
+                    ] },
+                    { num: "21-26-09", name: "Avionics Ventilation Filter", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided.", variants: [{ letter: "A", label: "VENTAVNCS SYS FAULT not displayed", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o) May be inoperative (clogged) provided that: 1) The blower and extract fans are operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The VENTAVNCS SYS FAULT alert is not displayed. (o) Refer to OpsProc 21-26-09A Avionics Ventilation Filter (VENT AVNCS SYS FAULT Alert not displayed)" }, { letter: "B", label: "Valve checked open", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative (clogged) provided that: 1) The blower and extract fans are operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The air conditioning inlet valve is checked open before each flight. (o) Refer to OpsProc 21-26-09B Avionics Ventilation Filter (Air conditioning inlet valve checked open before each flight) (m) Refer to AMM Task 21-26-00-040-009 Continued on the next page" }, { letter: "C", label: "Valve secured open", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative (clogged) provided that: 1) The blower and extract fans are operative, and 2) The EXTRACTpb-sw is set to OVRD, and 3) Both air conditioning packs are operative, and 4) The air conditioning inlet valve is secured in the open position, and 5) The avionics ventilation system is checked before each flight. (o) Refer to OpsProc 21-26-09C Avionics Ventilation Filter (Avionics ventilation system checked before each flight) (m) Refer to AMM Task 21-26-00-040-017" }] }
+                    ] },
+                    { num: "21-26-10", name: "Avionics Equipment Ventilation Computer (AEVC)", configs: [
+                        { applicable: "ALL", criteria: "SA", note: "During ground operations, correct avionics ventilation should be provided. (o) Refer to OpsProc 21-26-10A Avionics Equipment Ventilation Computer (AEVC) (m) Refer to AMM Task 21-26-00-040-005", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "No", remark: "(o)(m)May be inoperative provided that: 1) Both air conditioning packs are operative, and 2) The BLOWERpb-sw and the EXTRACTpb-sw are set to OVRD, and 3) The air conditioning inlet valve and the skin air outlet valve are checked in the correct position before each flight, and 4) The extract fan is checked operative before each flight, and 5) The skin air inlet valve is secured in the closed position." }] }
+                    ] },
+                    { num: "21-28-03", name: "AFT Cargo Extraction Fan", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0070", variants: [{ letter: "A", repair: "D", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative provided that the AFT ISOL VALVEpb-sw is set to OFF. (o) Refer to OpsProc 21-28-03A AFT Cargo Extraction Fan" }] }
+                    ] },
+                    { num: "21-28-04", name: "AFT Cargo Isolation Valve", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0070", variants: [{ letter: "A", label: "Inoperative in the closed position", repair: "D", installed: "2", required: "0", placard: "No", remark: "(o) One or both may be inoperative in the closed position provided that: 1) Both AFT cargo isolation valves are checked closed, and 2) AFT ISOL VALVEpb-sw FAULTlight is checked operative. (o) Refer to OpsProc 21-28-04A AFT Cargo Isolation Valve (Valves checked closed)" }, { letter: "B", label: "Deactivated in the closed position", repair: "D", installed: "2", required: "0", placard: "No", remark: "(o)(m)One or both may be inoperative provided that both AFT cargo isolation valves are deactivated in the closed position. (o) Refer to OpsProc 21-28-04B AFT Cargo Isolation Valve (Valves deactivated closed) (m) Refer to AMM Task 21-28-00-040-002" }] }
+                    ] },
+                    { num: "21-31-01", name: "Automatic Cabin Pressure Control System (CPC, Outflow Valve AUTO H12", configs: [
+                        { applicable: "A320NEO and A321NEO except (MSN 12693-12706, 12753)", criteria: "320-251N, 321-251NX, SA", variants: [{ letter: "A", label: "Automatic CPC 1 inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) Automatic cabin pressure control system 1 may be inoperative provided that: 1) ETOPS is not conducted, and 2) It is deactivated, and 3) The cabin pressure indications on the CAB PRESS SDpage are checked operative in manual mode, and 4) The LDG ELEVselector MAN function is operative, and 5) The AOT reference A53N020-25 is not applicable or Airbus approved instructions are successfully accomplished to recover panels conformity. (o) Refer to OpsProc 21-31-01A Automatic Cabin Pressure Control System (CPC, Outflow Valve AUTO Channel)" }, { letter: "B", label: "Automatic CPC 2 inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) Automatic cabin pressure control system 2 may be inoperative provided that: 1) It is deactivated, and 2) The cabin pressure indications on the CAB PRESS SDpage are checked operative in manual mode, and 3) The LDG ELEVselector MAN function is operative, and 4) The AOT reference A53N020-25 is not applicable or Airbus approved instructions are successfully accomplished to recover panels conformity. (o) Refer to OpsProc 21-31-01B Automatic Cabin Pressure Control System (CPC, Outflow Valve AUTO Channel) Continued on the next page" }, { letter: "C", label: "One or both automatic CPCs inoperative", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative provided that: 1) The manual cabin pressure control system is operative, and 2) The flight is not pressurized considering both automatic CPCs inoperative. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] },
+                        { applicable: "A319, A320CEO and A321CEO", criteria: "SA", variants: [{ letter: "A", label: "Automatic CPC 1 inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) Automatic cabin pressure control system 1 may be inoperative provided that: 1) ETOPS is not conducted, and 2) It is deactivated, and 3) The cabin pressure indications on the CAB PRESS SDpage are checked operative in manual mode, and 4) The LDG ELEVselector MAN function is operative. (o) Refer to OpsProc 21-31-01A Automatic Cabin Pressure Control System (CPC, Outflow Valve AUTO Channel)" }, { letter: "B", label: "Automatic CPC 2 inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) Automatic cabin pressure control system 2 may be inoperative provided that: 1) It is deactivated, and 2) The cabin pressure indications on the CAB PRESS SDpage are checked operative in manual mode, and 3) The LDG ELEVselector MAN function is operative. Continued on the next page" }, { letter: "C", label: "Both automatic CPCs inoperative", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The manual cabin pressure control system is operative, and 2) The flight is not pressurized. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] },
+                        { applicable: "MSN 12693-12706, 12753", criteria: "SA", note: "Due to Airbus AOT A53N020-25-00, MSNs: 12693 (G-TTSG), 12706 (G-TNEI) and 12753 (G-TNEJ) must not be dispatched with a single Automatic CPC inoperative under MEL Items", variants: [{ letter: "A", label: "or 21-31-01B.", repair: "", installed: "", required: "", placard: "", remark: "" }, { letter: "A", label: "Automatic CPC 1 inoperative", repair: "", installed: "", required: "", placard: "", remark: "- 2 2 No Cannot dispatch under this condition." }, { letter: "B", label: "Automatic CPC 2 inoperative", repair: "", installed: "", required: "", placard: "", remark: "- 2 2 No Cannot dispatch under this condition." }, { letter: "C", label: "One or both automatic CPCs inoperative", repair: "C", installed: "2", required: "0", placard: "No", remark: "One or both may be inoperative provided that: 1) The manual cabin pressure control system is operative, and 2) The flight is not pressurized considering both automatic CPCs inoperative. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] }
+                    ] },
+                    { num: "21-31-02", name: "Manual Cabin Pressure Control System (MAN V/S CTLselector,", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(m)May be inoperative provided that: 1) The LDG ELEVselector MAN function is operative, and 2) Both automatic cabin pressure control systems are checked operative before each flight. (m) Refer to AMM Task 21-31-00-040-002" }] }
+                    ] },
+                    { num: "21-31-03", name: "Pressure Safety Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "1", placard: "No", remark: "(m)One may be inoperative in the closed position provided that: 1) Both automatic cabin pressure control systems are operative, and 2) The three outflow valve motors are checked operative. (m) Refer to AMM Task 21-31-00-040-001" }] }
+                    ] },
+                    { num: "21-31-04", name: "Landing Elevation Selection AUTO Function", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative. (o) Refer to OpsProc 21-31-04A Landing Elevation Selection AUTO Function" }] }
+                    ] },
+                    { num: "21-31-05", name: "Landing Elevation Selection MAN Function", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative provided that: 1) The landing elevation selection AUTO function is operative, and 2) Both FMGCs are operative. (o) Refer to OpsProc 21-31-05A Landing Elevation Selection MAN Function" }] }
+                    ] },
+                    { num: "21-43-02", name: "AFT Cargo Compartment Heating", configs: [
+                        { applicable: "MSN 01834, 01892, 01902", criteria: "K0071", variants: [{ letter: "A", label: "HOT AIRpb-sw OFF", repair: "D", installed: "1", required: "0", placard: "No", remark: "(o) Hot air pressure regulating valve or trim air valve may be inoperative provided that: 1) The HOT AIRpb-sw on the CARGO HEAT overhead panel is set to OFF, and 2) The operative valve is indicated closed on the COND SDpage. (o) Refer to OpsProc 21-43-02A AFT Cargo Compartment Heating (Heating system set to OFF)" }, { letter: "B", label: "Valves secured closed", repair: "D", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)Hot air pressure regulating valve or trim air valve may be inoperative provided that one of these valves is secured in the closed position. (o) Refer to OpsProc 21-43-02B AFT Cargo Compartment Heating (Inoperative valve secured in the closed position) (m) Refer to AMM Task" }] }
+                    ] },
+                    { num: "21-51-01", name: "Pack Flow Control Valve", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, SA", variants: [{ letter: "A", label: "One inoperative in the closed position", repair: "C", installed: "2", required: "1", placard: "No", remark: "(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The affected pack flow control valve is secured in the closed position, and 3) The associated air conditioning pack is considered inoperative. Refer to Item 21-52-01 Air Conditioning Pack (m) Refer to AMM Task 21-51-00-040-001" }, { letter: "B", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The manual cabin pressure control system is operative, and 2) The flight is not pressurized. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] }
+                    ] },
+                    { num: "21-51-02", name: "Pack Flow Selection", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "May be inoperative." }] }
+                    ] },
+                    { num: "21-51-03", name: "Pack Flow Sensor", configs: [
+                        { applicable: "MSN 02441, 02694-13319", criteria: "K6443", variants: [{ letter: "A", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be inoperative. (o) Refer to OpsProc 21-51-03A Pack Flow Sensor" }] }
+                    ] },
+                    { num: "21-52-01", name: "Air Conditioning Pack", configs: [
+                        { applicable: "MSN 01418, 01482-01509, 01613-02040, 02305-02363, 02536", criteria: "31-1257, K6443, K9965, P7125, A320, A321", note: "This proviso does not apply if the pack flow control valve has been secured in the closed position as per item 21-51-01. (o) Refer to OpsProc 21-52-01B Air Conditioning Pack (One Air Conditioning Pack Inoperative) Continued on the next page", variants: [{ letter: "A", label: "With speedbrakes available H13", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o) One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The CONDZONE REGUL FAULT alert is not displayed, and 3) The affected PACK 1(2)pb-sw is set to OFF, and 4) The speedbrakes are operative, and 5) The associated pack flow control valve is checked closed on the BLEED SDpage." }, { letter: "B", label: "Limitation to 31500ft H13", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o) One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 31500ft (9600m), and 3) The CONDZONE REGUL FAULT alert is not displayed on the EWD, and 4) The affected PACK 1(2)pb-sw is set to OFF, and 5) The associated pack flow control valve is checked closed on the BLEED SDpage." }, { letter: "G", label: "Air cycle machine failed", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be operated on heat exchanger cooling only (air cycle machine failure) provided that: 1) The corresponding pack controller is operative, and 2) The affected pack outlet temperature indication is operative on the BLEED SDpage. (o) Refer to OpsProc 21-52-01G Air Conditioning Pack (One Air Conditioning Pack in Heat Exchanger Cooling Mode only)" }, { letter: "H", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The flight is not pressurized Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization, and 2) The flight is performed with no passengers on board." }] },
+                        { applicable: "MSN 02441, 03081-13319", criteria: "K6443, P7125, A320, A321", variants: [{ letter: "D", label: "With speedbrakes available H15", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o)(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The following alerts: AIRPACK 1(2) REGUL FAULT AIRCOND CTL 1(2)-A FAULT H14 AIRCOND CTL 1(2)-B FAULT H14 associated with the operative pack are not displayed on the EWD, and 3) The affected PACK 1(2)pb-sw is set to OFF, and 4) The speedbrakes are operative, and 5) The associated pack flow control valve is secured in the closed position. (o) Refer to OpsProc 21-52-01D Air Conditioning Pack (One Air Conditioning Pack Inoperative) (m) Refer to AMM Task 21-51-00-040-002" }, { letter: "E", label: "Limitation to 31500ft H15", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o)(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 31500ft (9600m), and 3) The following alerts: AIRPACK 1(2) REGUL FAULT AIRCOND CTL 1(2)-A FAULT AIRCOND CTL 1(2)-B FAULT associated with the operative pack are not displayed on the EWD, and 4) The affected PACK 1(2)pb-sw is set to OFF, and 5) The associated pack flow control valve is secured in the closed position. Continued on the next page" }, { letter: "G", label: "Air cycle machine failed", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be operated on heat exchanger cooling only (air cycle machine failure) provided that: 1) The following alerts: AIRCOND CTL 1(2)-A FAULT H14 AIRCOND CTL 1(2)-B FAULT H14 associated with the operative pack are not displayed on the EWD, and 2) The affected pack outlet temperature indication is operative on the BLEED SDpage. (o) Refer to OpsProc 21-52-01G Air Conditioning Pack (One Air Conditioning Pack in Heat Exchanger Cooling Mode only)" }, { letter: "H", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The flight is not pressurized Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization, and 2) The flight is performed with no passengers on board." }] },
+                        { applicable: "A319 except (MSN 02694-03049)", criteria: "31-1257, P7125, A319", note: "In the case of depressurization at altitudes higher than 37000ft (11200m), oxygen masks may drop down during the descent. (o) Refer to OpsProc 21-52-01C Air Conditioning Pack (One Air Conditioning Pack Inoperative)", variants: [{ letter: "A", label: "With speedbrakes available and limitation to 37000ft H16", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o) One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 37000ft (11200m), and 3) The CONDZONE REGUL FAULT alert is not displayed on the EWD, and 4) The affected PACK 1(2)pb-sw is set to OFF, and 5) The speedbrakes are operative, and 6) The associated pack flow control valve is checked closed on the BLEED SDpage." }, { letter: "B", label: "Limitation to 31500ft H16", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o) One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 31500ft (9600m), and 3) The CONDZONE REGUL FAULT alert is not displayed on the EWD, and 4) The affected PACK 1(2)pb-sw is set to OFF, and 5) The associated pack flow control valve is checked closed on the BLEED SDpage." }, { letter: "C", label: "With speedbrakes available H16", repair: "B", installed: "2", required: "1", placard: "Yes", remark: "(o) One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The COND ZONE REGUL FAULT alert is not displayed on the EWD, and 3) The affected PACK 1(2)pb-sw is set to OFF, and 4) The speedbrakes are operative, and 5) The associated pack flow control valve is checked closed on the BLEED SDpage." }, { letter: "G", label: "Air cycle machine failed", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be operated on heat exchanger cooling only (air cycle machine failure) provided that: 1) The corresponding pack controller is operative, and 2) The affected pack outlet temperature indication is operative on the BLEED SDpage. (o) Refer to OpsProc 21-52-01G Air Conditioning Pack (One Air Conditioning Pack in Heat Exchanger Cooling Mode only)" }, { letter: "H", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The flight is not pressurized Continued on the next page" }] },
+                        { applicable: "MSN 02694-03049", criteria: "K6443, P7125, A319", note: "In the case of depressurization at altitudes higher than 37000ft (11200m), oxygen masks may drop down during the descent. (o) Refer to OpsProc 21-52-01F Air Conditioning Pack (One Air Conditioning Pack Inoperative) (m) Refer to AMM Task 21-51-00-040-002", variants: [{ letter: "D", label: "With speedbrakes available and limitation to 37000ft H17", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o)(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 37000ft (11200m), and 3) The following alerts: AIRPACK 1(2) REGUL FAULT AIRCOND CTL 1(2)-A FAULT H18 AIRCOND CTL 1(2)-B FAULT H18 associated with the operative pack are not displayed on the EWD, and 4) The affected PACK 1(2)pb-sw is set to OFF, and 5) The speedbrakes are operative, and 6) The associated pack flow control valve is secured in the closed position. (o) Refer to OpsProc 21-52-01D Air Conditioning Pack (One Air Conditioning Pack Inoperative) (m) Refer to AMM Task 21-51-00-040-002" }, { letter: "E", label: "Limitation to 31500ft H17", repair: "C", installed: "2", required: "1", placard: "Yes", remark: "(o)(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The flight altitude is limited to 31500ft (9600m), and 3) The following alerts: AIRPACK 1(2) REGUL FAULT AIRCOND CTL 1(2)-A FAULT Continued on the next page" }, { letter: "F", label: "With speedbrakes available H17", repair: "B", installed: "2", required: "1", placard: "Yes", remark: "(o)(m)One may be inoperative provided that: 1) ETOPS is not conducted, and 2) The following alerts: AIRPACK 1(2) REGUL FAULT AIRCOND CTL 1(2)-A FAULT AIRCOND CTL 1(2)- B FAULT associated with the operative pack are not displayed on the EWD, and 3) The affected PACK 1(2)pb-sw is set to OFF, and 4) The speedbrakes are operative, and 5) The associated pack flow control valve is secured in the closed position." }, { letter: "G", label: "Air cycle machine failed", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be operated on heat exchanger cooling only (air cycle machine failure) provided that: 1) The following alerts: AIRCOND CTL 1(2)-A FAULT H18 Continued on the next page" }, { letter: "H", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative provided that: 1) The flight is not pressurized Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization, and 2) The flight is performed with no passengers on board." }] }
+                    ] },
+                    { num: "21-52-02", name: "Air Conditioning Pack Ram Air Inlet Flap", configs: [
+                        { applicable: "ALL", criteria: "K3737, SA", variants: [{ letter: "A", label: "Flap deactivated", repair: "C", installed: "2", required: "0", placard: "No", remark: "(m)One or both may be inoperative provided that the affected flap is deactivated in the open position. (m) Refer to AMM Task 21-61-00-040-002" }, { letter: "B", label: "Only one inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "One may be inoperative in the closed position provided that the associated air conditioning pack is considered inoperative. Refer to Item 21-52-01 Air Conditioning Pack" }, { letter: "C", label: "Non pressurized flight", repair: "C", installed: "2", required: "0", placard: "No", remark: "Both may be inoperative in the closed position provided that the flight is not pressurized. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] }
+                    ] },
+                    { num: "21-55-01", name: "Emergency Ram Air Inlet", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", label: "Ram air inlet deactivated", repair: "C", installed: "1", required: "0", placard: "No", remark: "(m)May be inoperative provided that: 1) The emergency ram air inlet is deactivated in the closed position, and 2) Both air conditioning packs are checked operative. (m) Refer to AMM Task 21-55-00-040-002" }, { letter: "B", label: "Non pressurized flight", repair: "C", installed: "1", required: "0", placard: "No", remark: "May be inoperative in the open position provided that: 1) ETOPS and extended overwater flight is not conducted, and 2) The flight is not pressurized. Refer to FCOM/PRO-NOR-SUP-MISC-E Flight Without Cabin Pressurization" }] }
+                    ] },
+                    { num: "21-61-01", name: "Pack Turbine Bypass Valve", configs: [
+                        { applicable: "ALL", criteria: "SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "1", placard: "No", remark: "One may be inoperative." }] }
+                    ] },
+                    { num: "21-61-02", name: "Pack Controller Primary Channel", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, SA", variants: [{ letter: "A", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) One may be inoperative. (o) Refer to OpsProc 21-61-02A Pack Controller Primary Channel" }] }
+                    ] },
+                    { num: "21-63-01", name: "Zone Controller Channel", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, SA", note: "1. Unequal passengers distribution may cause high temperature in the rear cabin when the hot air pressure regulating valve is closed. Continued on the next page", variants: [{ letter: "A", label: "Primary channel inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "(o) Primary channel may be inoperative provided that the hot air pressure regulating valve is checked closed on the COND SDpage." }, { letter: "B", label: "Secondary channel inoperative", repair: "C", installed: "2", required: "1", placard: "No", remark: "Secondary channel may be inoperative provided that the minimum idle on ground is considered inoperative. Refer to Item 73-20-05A Minimum Idle on Ground" }, { letter: "C", label: "Both channels inoperative", repair: "C", installed: "2", required: "0", placard: "No", remark: "(o)(m)Primary and secondary channel may be inoperative provided that: 1) The hot air pressure regulating valve is secured in the closed position, and 2) The minimum idle on ground is considered inoperative. Refer to Item 73-20-05A Minimum Idle on Ground" }] }
+                    ] },
+                    { num: "21-63-02", name: "Cockpit and Cabin Trim Air Valve", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, SA", note: "1. Unequal passengers distribution may cause high temperature in the rear cabin when more than one trim air valves are inoperative or when the hot air pressure regulating valve is closed. 2. The temperature in the cockpit may be low when the hot air pressure regulating valve is closed combined with single pack operation.", variants: [{ letter: "C", label: "Hot air pressure valve checked closed", repair: "C", installed: "3", required: "0", placard: "No", remark: "(o) One or more may be inoperative provided that: 1) The HOT AIRpb-sw is set to OFF, and 2) The hot air pressure regulating valve is checked closed on the COND SDpage. (o) Refer to OpsProc 21-63-02C Cockpit and Cabin Trim Air Valve (Hot air pressure regulating valve checked closed)" }, { letter: "D", label: "Affected valve secured closed", repair: "C", installed: "3", required: "0", placard: "No", remark: "(o)(m)One or more may be inoperative provided that the affected valve is secured in the closed position. (o) Refer to OpsProc 21-63-02D Cockpit and Cabin Trim Air Valve (Affected valve secured in the closed position) (m) Refer to AMM Task 21-63-00-040-001" }] },
+                        { applicable: "MSN 02441, 02694-13319", criteria: "K6443, SA", variants: [{ letter: "A", label: "Affected valve checked closed", repair: "C", installed: "3", required: "0", placard: "No", remark: "(o) One or more may be inoperative provided that the affected valve is checked closed on the COND SDpage. (o) Refer to OpsProc 21-63-02A Cockpit and Cabin Trim Air Valve (Affected valve secured in the closed position)" }, { letter: "B", label: "Hot air pressure valve checked operative", repair: "C", installed: "3", required: "0", placard: "No", remark: "(o) One or more may be inoperative provided that the hot air pressure regulating valve is checked operative on the COND SDpage. (o) Refer to OpsProc 21-63-02B Cockpit and Cabin Trim Air Valve (Hot air pressure regulating valve checked closed)" }, { letter: "E", label: "Hot air pressure valve considered inoperative", repair: "C", installed: "3", required: "0", placard: "No", remark: "One or more may be inoperative provided that the hot air pressure regulating valve is considered inoperative. Refer to Item 21-63-03 Hot Air Pressure Regulating Valve" }] }
+                    ] },
+                    { num: "21-63-03", name: "Hot Air Pressure Regulating Valve", configs: [
+                        { applicable: "MSN 01142-02429, 02466-02536", criteria: "K6443, K9965, SA", note: "1. Unequal passengers distribution may cause high temperature in the rear cabin when the hot air pressure regulating valve is closed. 2. The temperature in the cockpit may be low when the hot air pressure regulating valve is closed combined with single pack operation.", variants: [{ letter: "A", label: "Valve checked closed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative provided that: 1) The HOT AIRpb-sw is set to OFF, and 2) The hot air pressure regulating valve is checked closed on the COND SDpage. (o) Refer to OpsProc 21-63-03A Hot Air Pressure Regulating Valve (Hot air pressure valve checked closed)" }, { letter: "C", label: "Hot air pressure valve secured closed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that the hot air pressure regulating valve is secured in the closed position. (o) Refer to OpsProc 21-63-03C Hot Air Pressure Regulating Valve (Affected valve secured in the closed position) (m) Refer to AMM Task 21-63-00-040-002" }] },
+                        { applicable: "MSN 02441, 02694-13319", criteria: "K6443, SA", note: "1. Unequal passengers distribution may cause high temperature in the rear cabin when more than one trim air valves are inoperative or when the hot air pressure regulating valve is closed. 2. The temperature in the cockpit may be low when the hot air pressure regulating valve is closed combined with single pack operation.", variants: [{ letter: "A", label: "Hot air pressure valve checked closed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative in the closed position provided that: 1) HOT AIRpb-sw is set to OFF, and 2) Hot Air Pressure Regulating Valve is checked closed on the COND SDpage. (o) Refer to OpsProc 21-63-03A Hot Air Pressure Regulating Valve (Hot air pressure valve checked closed)" }, { letter: "B", label: "All trim valve checked closed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o) May be inoperative in the open position provided that: 1) HOT AIRpb-sw is set to OFF, and 2) All Trim Air Valves are checked closed on the COND SDpage. (o) Refer to OpsProc 21-63-03B Hot Air Pressure Regulating Valve (Trim air valve checked closed) Continued on the next page" }, { letter: "C", label: "Hot air pressure valve secured closed", repair: "C", installed: "1", required: "0", placard: "Yes", remark: "(o)(m)May be inoperative provided that the hot air pressure regulating valve is secured in the closed position. (o) Refer to OpsProc 21-63-03C Hot Air Pressure Regulating Valve (Affected valve secured in the closed position) (m) Refer to AMM Task 21-63-00-040-002" }] }
+                    ] },
+                    { num: "21-63-04", name: "Air Conditioning System Controller Channel (COND CTL 1(2)-A(B))", configs: [
+                        { applicable: "MSN 02441, 02694-13319", criteria: "K6443", variants: [{ letter: "A", label: "Non ETOPS flight", repair: "C", installed: "4", required: "2", placard: "No", remark: "One may be inoperative on each side provided that ETOPS is not conducted." }, { letter: "B", label: "ETOPS flight", repair: "C", installed: "4", required: "2", placard: "No", remark: "For ETOPS, one may be inoperative on each side provided that the AIRCOND CTL 1–B FAULT alert is not displayed on the EWD." }] }
+                    ] }
                 ]
             },
             "22": {
@@ -4102,13 +4250,39 @@
             appTitle.textContent = `MEL ${ataCode}`;
             melDetailHeading.textContent = item.name;
 
+            const hasConfigs = Array.isArray(item.configs) && item.configs.length > 0;
+
+            const renderConfig = (config) => {
+                const metaLines = [];
+                if (config.applicable) metaLines.push(`<div class="mel-meta"><strong>Applicable to:</strong> ${config.applicable}</div>`);
+                if (config.criteria) metaLines.push(`<div class="mel-meta"><strong>Criteria:</strong> ${config.criteria}</div>`);
+                if (config.note) metaLines.push(`<div class="mel-meta"><strong>Note:</strong> ${config.note}</div>`);
+
+                const variantCards = (config.variants || []).map(v => `
+                    <div class="detail-card">
+                        <div class="mel-variant-header">${item.num}${v.letter}${v.label ? ' — ' + v.label : ''}</div>
+                        <div class="mel-variant-table">
+                            <div><span>Repair int.</span><strong>${v.repair || '—'}</strong></div>
+                            <div><span>Installed</span><strong>${v.installed || '—'}</strong></div>
+                            <div><span>Required</span><strong>${v.required || '—'}</strong></div>
+                            <div><span>Placard</span><strong>${v.placard || '—'}</strong></div>
+                        </div>
+                        <div class="general-notes">${v.remark || ''}</div>
+                    </div>
+                `).join('');
+
+                return `${metaLines.length ? `<div class="detail-card">${metaLines.join('')}</div>` : ''}${variantCards}`;
+            };
+
             melDetailContainer.innerHTML = `
                 <div class="mel-item-num">MEL Item ${item.num}</div>
-                <div class="detail-card">
-                    <div class="general-notes">${item.notes}</div>
-                </div>
+                ${hasConfigs
+                    ? item.configs.map(renderConfig).join('')
+                    : `<div class="detail-card"><div class="general-notes">${item.notes || ''}</div></div>`}
                 <div class="mel-banner">
-                    This app only indexes MEL item titles and numbers. Dispatch conditions, limitations, and required procedures are controlled content and must be checked against the current, effective MEL — this index is not a substitute for it.
+                    ${hasConfigs
+                        ? `Transcribed from the BAW A318/A319/A320/A321 MEL, revision 17-Dec-25. MEL revisions change frequently — always confirm against the current, effective MEL before making a dispatch decision. This entry is not a substitute for the controlled manual.`
+                        : `This app only indexes MEL item titles and numbers for this chapter. Dispatch conditions, limitations, and required procedures are controlled content and must be checked against the current, effective MEL — this index is not a substitute for it.`}
                 </div>
             `;
 
