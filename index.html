@@ -131,6 +131,17 @@
             .card-title {
                 font-size: 0.98rem;
             }
+            .home-grid {
+                grid-template-columns: repeat(auto-fit, minmax(190px, 240px));
+                gap: 1.25rem;
+            }
+            .home-grid .card {
+                padding: 1.9rem 1.6rem;
+                min-height: 128px;
+            }
+            .home-grid .card-title {
+                font-size: 1.15rem;
+            }
             #splash-screen h2 {
                 font-size: 1.9rem;
             }
@@ -143,6 +154,9 @@
             }
             .grid {
                 grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            }
+            .home-grid {
+                grid-template-columns: repeat(auto-fit, minmax(210px, 260px));
             }
             .section-header {
                 font-size: 1.55rem;
@@ -248,6 +262,44 @@
             color: var(--mel-accent);
             margin-top: 0.35rem;
             font-weight: 500;
+        }
+
+        /* Home page cards: bigger and centered, distinct from the
+           denser chapter/issue grids used deeper in the app. */
+        .home-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+            justify-content: center;
+            gap: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .home-grid .card {
+            padding: 1.6rem 1.4rem;
+            min-height: 108px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .home-grid .card-code {
+            font-size: 0.75rem;
+        }
+
+        .home-grid .card-title {
+            font-size: 1.05rem;
+        }
+
+        .disclaimer-banner {
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.15rem;
+            margin-top: 1.75rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 460px;
+            text-align: left;
         }
 
         /* List View */
@@ -600,10 +652,13 @@
             <h2>Airbus Quick Fix Guide</h2>
             <p>British Airways Engineering</p>
             <button class="start-btn" onclick="startApp()">START</button>
+            <div class="disclaimer-banner">
+                This app is intended as a quick-reference tool only. Its contents may not reflect the most recent revisions, so always confirm against the current approved documentation before making a maintenance or dispatch decision.
+            </div>
         </div>
 
         <div id="home-container" class="view-section">
-            <div id="home-view" class="grid"></div>
+            <div id="home-view" class="grid home-grid"></div>
         </div>
 
         <!-- MEL: list of ATA chapters within the MEL index -->
