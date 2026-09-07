@@ -594,6 +594,13 @@
             <div id="pn-detail-container"></div>
         </div>
 
+        <!-- Quick Fix: list of ATA chapters within the Quick Fix folder -->
+        <div id="quickfix-home-view" class="view-section">
+            <h2 class="section-header">Quick Fix</h2>
+            <div class="section-sub">Pilot maintenance messages and faults, indexed by ATA chapter:</div>
+            <div id="quickfix-chapters-grid" class="grid"></div>
+        </div>
+
         <div id="issues-view" class="view-section">
             <h2 id="issues-heading" class="section-header"></h2>
             <div id="issues-sub" class="section-sub">Select a pilot maintenance message or fault displayed on screen:</div>
@@ -633,6 +640,15 @@
                 isPN: true,
                 issues: []
             },
+            "QUICKFIX": {
+                title: "Quick Fix",
+                images: [],
+                isQuickFix: true,
+                issues: []
+            },
+        };
+
+        const quickFixDatabase = {
             "ATA 05": {
                 title: "Time Limits & Checks",
                 images: [],
@@ -3762,6 +3778,8 @@
         const pnDetailView = document.getElementById('pn-detail-view');
         const pnDetailHeading = document.getElementById('pn-detail-heading');
         const pnDetailContainer = document.getElementById('pn-detail-container');
+        const quickfixHomeView = document.getElementById('quickfix-home-view');
+        const quickfixChaptersGrid = document.getElementById('quickfix-chapters-grid');
         const issuesView = document.getElementById('issues-view');
         const detailView = document.getElementById('detail-view');
         const backBtn = document.getElementById('back-btn');
@@ -3783,6 +3801,7 @@
             pnHomeView.style.display = 'none';
             pnItemsView.style.display = 'none';
             pnDetailView.style.display = 'none';
+            quickfixHomeView.style.display = 'none';
             issuesView.style.display = 'none';
             detailView.style.display = 'none';
         }
@@ -3792,10 +3811,42 @@
             hideAllViews();
             homeContainer.style.display = 'block';
             appTitle.textContent = 'Airbus Quick Fix';
+            searchInput.value = '';
+            searchInput.placeholder = "Search pilot maintenance messages, ECAM, or C/B's...";
             searchInput.style.display = 'block';
             backBtn.style.display = 'none';
-            renderHome(ataDatabase);
+            renderHome(getTopLevelDatabase());
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // The home screen only ever shows the three folder cards (MEL,
+        // Part Numbers, Quick Fix). Individual ATA chapters live one
+        // level down, inside whichever folder they belong to.
+        function getTopLevelDatabase() {
+            const top = {};
+            ['MEL', 'PN', 'QUICKFIX'].forEach(code => {
+                if (ataDatabase[code]) top[code] = ataDatabase[code];
+            });
+            return top;
+        }
+
+        // Works out the "N items" caption shown on a card, based on what
+        // kind of card it is.
+        function getCardCount(data) {
+            if (data.isMEL) {
+                const n = Object.keys(melDatabase).length;
+                return `${n} chapter${n === 1 ? '' : 's'}`;
+            }
+            if (data.isPN) {
+                const n = Object.keys(partNumberDatabase).length;
+                return `${n} chapter${n === 1 ? '' : 's'}`;
+            }
+            if (data.isQuickFix) {
+                const n = Object.keys(quickFixDatabase).length;
+                return `${n} chapter${n === 1 ? '' : 's'}`;
+            }
+            const n = (data.issues || []).length;
+            return `${n} issue${n === 1 ? '' : 's'}`;
         }
 
         function renderHome(dataToRender) {
@@ -3821,7 +3872,7 @@
         }
 
         function openChapter(code) {
-            const chapter = ataDatabase[code];
+            const chapter = ataDatabase[code] || quickFixDatabase[code];
             if (!chapter) return;
 
             // The MEL card routes into its own three-level index instead
@@ -3837,13 +3888,50 @@
                 return;
             }
 
+            // The Quick Fix card routes into its own chapter grid, drawn
+            // from quickFixDatabase.
+            if (chapter.isQuickFix) {
+                openQuickFixHome();
+                return;
+            }
+
             selectedChapterKey = code;
             currentView = 'issues';
             appTitle.textContent = code;
             issuesHeading.textContent = `${code}: ${chapter.title}`;
-            
+            searchInput.value = '';
+            searchInput.placeholder = "Search this chapter's messages...";
+            renderIssuesList('');
+
+            hideAllViews();
+            issuesView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderIssuesList(query) {
+            const chapter = ataDatabase[selectedChapterKey] || quickFixDatabase[selectedChapterKey];
+            if (!chapter) return;
+            const code = selectedChapterKey;
+            const q = (query || '').toLowerCase().trim();
+
             issuesList.innerHTML = '';
-            chapter.issues.forEach((issue, index) => {
+            const rows = chapter.issues
+                .map((issue, index) => ({ issue, index }))
+                .filter(({ issue }) => !q ||
+                    issue.name.toLowerCase().includes(q) ||
+                    issue.notes.toLowerCase().includes(q) ||
+                    issue.ceo.toLowerCase().includes(q) ||
+                    issue.neo.toLowerCase().includes(q)
+                );
+
+            if (rows.length === 0) {
+                issuesList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No matching messages found.</div>';
+                return;
+            }
+
+            rows.forEach(({ issue, index }) => {
                 const row = document.createElement('div');
                 row.className = 'issue-row';
                 row.onclick = () => openIssueDetail(code, index);
@@ -3853,12 +3941,58 @@
                 `;
                 issuesList.appendChild(row);
             });
+        }
+
+        // ---------- Quick Fix navigation ----------
+
+        function openQuickFixHome() {
+            currentView = 'quickfix-home';
+            appTitle.textContent = 'Quick Fix';
+            searchInput.value = '';
+            searchInput.placeholder = 'Search Quick Fix chapters...';
+            renderQuickFixGrid('');
 
             hideAllViews();
-            issuesView.style.display = 'block';
+            quickfixHomeView.style.display = 'block';
             backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
+            searchInput.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderQuickFixGrid(query) {
+            const q = (query || '').toLowerCase().trim();
+            quickfixChaptersGrid.innerHTML = '';
+
+            const keys = Object.keys(quickFixDatabase).filter(code => {
+                if (!q) return true;
+                const chapter = quickFixDatabase[code];
+                return code.toLowerCase().includes(q) ||
+                    chapter.title.toLowerCase().includes(q) ||
+                    chapter.issues.some(i =>
+                        i.name.toLowerCase().includes(q) ||
+                        i.notes.toLowerCase().includes(q) ||
+                        i.ceo.toLowerCase().includes(q) ||
+                        i.neo.toLowerCase().includes(q)
+                    );
+            });
+
+            if (keys.length === 0) {
+                quickfixChaptersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 3rem; font-size: 0.9rem;">No chapters found</div>';
+                return;
+            }
+
+            keys.forEach(code => {
+                const chapter = quickFixDatabase[code];
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openChapter(code);
+                card.innerHTML = `
+                    <div class="card-code">${code}</div>
+                    <div class="card-title">${chapter.title}</div>
+                    <div class="card-count">${getCardCount(chapter)}</div>
+                `;
+                quickfixChaptersGrid.appendChild(card);
+            });
         }
 
         // ---------- MEL navigation ----------
@@ -3866,9 +4000,35 @@
         function openMELHome() {
             currentView = 'mel-home';
             appTitle.textContent = 'MEL';
+            searchInput.value = '';
+            searchInput.placeholder = 'Search MEL chapters...';
+            renderMELGrid('');
+
+            hideAllViews();
+            melHomeView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderMELGrid(query) {
+            const q = (query || '').toLowerCase().trim();
             melChaptersGrid.innerHTML = '';
 
-            Object.keys(melDatabase).forEach(ataCode => {
+            const keys = Object.keys(melDatabase).filter(ataCode => {
+                if (!q) return true;
+                const chapter = melDatabase[ataCode];
+                return ataCode.toLowerCase().includes(q) ||
+                    chapter.title.toLowerCase().includes(q) ||
+                    chapter.items.some(it => it.name.toLowerCase().includes(q) || it.num.toLowerCase().includes(q));
+            });
+
+            if (keys.length === 0) {
+                melChaptersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 3rem; font-size: 0.9rem;">No chapters found</div>';
+                return;
+            }
+
+            keys.forEach(ataCode => {
                 const chapter = melDatabase[ataCode];
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -3880,12 +4040,6 @@
                 `;
                 melChaptersGrid.appendChild(card);
             });
-
-            hideAllViews();
-            melHomeView.style.display = 'block';
-            backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openMELChapter(ataCode) {
@@ -3896,9 +4050,34 @@
             currentView = 'mel-items';
             appTitle.textContent = `MEL ${ataCode}`;
             melItemsHeading.textContent = `ATA ${ataCode}: ${chapter.title}`;
+            searchInput.value = '';
+            searchInput.placeholder = "Search this chapter's MEL items...";
+            renderMELItemsList('');
+
+            hideAllViews();
+            melItemsView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderMELItemsList(query) {
+            const chapter = melDatabase[selectedMELChapterKey];
+            if (!chapter) return;
+            const ataCode = selectedMELChapterKey;
+            const q = (query || '').toLowerCase().trim();
 
             melItemsList.innerHTML = '';
-            chapter.items.forEach((item, index) => {
+            const rows = chapter.items
+                .map((item, index) => ({ item, index }))
+                .filter(({ item }) => !q || item.name.toLowerCase().includes(q) || item.num.toLowerCase().includes(q));
+
+            if (rows.length === 0) {
+                melItemsList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No matching items found.</div>';
+                return;
+            }
+
+            rows.forEach(({ item, index }) => {
                 const row = document.createElement('div');
                 row.className = 'issue-row';
                 row.onclick = () => openMELItemDetail(ataCode, index);
@@ -3911,12 +4090,6 @@
                 `;
                 melItemsList.appendChild(row);
             });
-
-            hideAllViews();
-            melItemsView.style.display = 'block';
-            backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openMELItemDetail(ataCode, index) {
@@ -3942,7 +4115,7 @@
             hideAllViews();
             melDetailView.style.display = 'block';
             backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
+            searchInput.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -3951,9 +4124,39 @@
         function openPNHome() {
             currentView = 'pn-home';
             appTitle.textContent = 'Part Numbers';
+            searchInput.value = '';
+            searchInput.placeholder = 'Search Part Number chapters...';
+            renderPNGrid('');
+
+            hideAllViews();
+            pnHomeView.style.display = 'block';
+            backBtn.style.display = 'inline-block';
+            searchInput.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderPNGrid(query) {
+            const q = (query || '').toLowerCase().trim();
             pnChaptersGrid.innerHTML = '';
 
-            Object.keys(partNumberDatabase).forEach(ataCode => {
+            const keys = Object.keys(partNumberDatabase).filter(ataCode => {
+                if (!q) return true;
+                const chapter = partNumberDatabase[ataCode];
+                return ataCode.toLowerCase().includes(q) ||
+                    chapter.title.toLowerCase().includes(q) ||
+                    chapter.items.some(it =>
+                        it.desc.toLowerCase().includes(q) ||
+                        (it.pn || '').toLowerCase().includes(q) ||
+                        (it.neo || '').toLowerCase().includes(q)
+                    );
+            });
+
+            if (keys.length === 0) {
+                pnChaptersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 3rem; font-size: 0.9rem;">No chapters found</div>';
+                return;
+            }
+
+            keys.forEach(ataCode => {
                 const chapter = partNumberDatabase[ataCode];
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -3965,12 +4168,6 @@
                 `;
                 pnChaptersGrid.appendChild(card);
             });
-
-            hideAllViews();
-            pnHomeView.style.display = 'block';
-            backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function pnRowSubtitle(item) {
@@ -3990,31 +4187,56 @@
             currentView = 'pn-items';
             appTitle.textContent = `PN ${ataCode}`;
             pnItemsHeading.textContent = `ATA ${ataCode}: ${chapter.title}`;
-
-            pnItemsList.innerHTML = '';
-            if (chapter.items.length === 0) {
-                pnItemsList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No part numbers logged yet for this chapter.</div>';
-            } else {
-                chapter.items.forEach((item, index) => {
-                    const row = document.createElement('div');
-                    row.className = 'issue-row';
-                    row.onclick = () => openPNItemDetail(ataCode, index);
-                    row.innerHTML = `
-                        <div>
-                            <div class="issue-title">${item.desc}</div>
-                            <div class="issue-subtitle" style="font-family: ui-monospace, monospace;">${pnRowSubtitle(item)}</div>
-                        </div>
-                        <div class="chevron">›</div>
-                    `;
-                    pnItemsList.appendChild(row);
-                });
-            }
+            searchInput.value = '';
+            searchInput.placeholder = "Search this chapter's part numbers...";
+            renderPNItemsList('');
 
             hideAllViews();
             pnItemsView.style.display = 'block';
             backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
+            searchInput.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderPNItemsList(query) {
+            const chapter = partNumberDatabase[selectedPNChapterKey];
+            if (!chapter) return;
+            const ataCode = selectedPNChapterKey;
+            const q = (query || '').toLowerCase().trim();
+
+            pnItemsList.innerHTML = '';
+
+            if (chapter.items.length === 0) {
+                pnItemsList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No part numbers logged yet for this chapter.</div>';
+                return;
+            }
+
+            const rows = chapter.items
+                .map((item, index) => ({ item, index }))
+                .filter(({ item }) => !q ||
+                    item.desc.toLowerCase().includes(q) ||
+                    (item.pn || '').toLowerCase().includes(q) ||
+                    (item.neo || '').toLowerCase().includes(q)
+                );
+
+            if (rows.length === 0) {
+                pnItemsList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem;">No matching part numbers found.</div>';
+                return;
+            }
+
+            rows.forEach(({ item, index }) => {
+                const row = document.createElement('div');
+                row.className = 'issue-row';
+                row.onclick = () => openPNItemDetail(ataCode, index);
+                row.innerHTML = `
+                    <div>
+                        <div class="issue-title">${item.desc}</div>
+                        <div class="issue-subtitle" style="font-family: ui-monospace, monospace;">${pnRowSubtitle(item)}</div>
+                    </div>
+                    <div class="chevron">›</div>
+                `;
+                pnItemsList.appendChild(row);
+            });
         }
 
         function openPNItemDetail(ataCode, index) {
@@ -4094,7 +4316,7 @@
             hideAllViews();
             pnDetailView.style.display = 'block';
             backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
+            searchInput.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -4116,7 +4338,7 @@
         // ---------- ATA chapter (non-MEL) navigation ----------
 
         function openIssueDetail(code, index) {
-            const chapter = ataDatabase[code];
+            const chapter = ataDatabase[code] || quickFixDatabase[code];
             const issue = chapter.issues[index];
 
             currentView = 'detail';
@@ -4157,7 +4379,7 @@
             hideAllViews();
             detailView.style.display = 'block';
             backBtn.style.display = 'inline-block';
-            searchInput.style.display = 'none';
+            searchInput.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -4177,7 +4399,7 @@
         }
 
         function openModal(chapterCode) {
-            const chapter = ataDatabase[chapterCode];
+            const chapter = ataDatabase[chapterCode] || quickFixDatabase[chapterCode];
             modalBody.innerHTML = '';
             
             if (chapter.images && chapter.images.length > 0) {
@@ -4206,6 +4428,8 @@
             if (currentView === 'detail') {
                 openChapter(selectedChapterKey);
             } else if (currentView === 'issues') {
+                openQuickFixHome();
+            } else if (currentView === 'quickfix-home') {
                 goHome();
             } else if (currentView === 'mel-detail') {
                 openMELChapter(selectedMELChapterKey);
@@ -4230,19 +4454,54 @@
             backBtn.style.display = 'none';
             searchInput.style.display = 'block';
             searchInput.value = '';
-            renderHome(ataDatabase);
+            searchInput.placeholder = "Search pilot maintenance messages, ECAM, or C/B's...";
+            renderHome(getTopLevelDatabase());
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // The search bar stays visible and live on every page. What it
+        // filters depends on whichever page is currently open; on
+        // single-item detail pages there's nothing to filter, so typing
+        // there is a no-op.
         function handleSearch(query) {
+            switch (currentView) {
+                case 'home':
+                    renderHomeFiltered(query);
+                    break;
+                case 'quickfix-home':
+                    renderQuickFixGrid(query);
+                    break;
+                case 'mel-home':
+                    renderMELGrid(query);
+                    break;
+                case 'mel-items':
+                    renderMELItemsList(query);
+                    break;
+                case 'pn-home':
+                    renderPNGrid(query);
+                    break;
+                case 'pn-items':
+                    renderPNItemsList(query);
+                    break;
+                case 'issues':
+                    renderIssuesList(query);
+                    break;
+                default:
+                    // detail / mel-detail / pn-detail: single item already
+                    // shown in full, nothing to filter.
+                    break;
+            }
+        }
+
+        function renderHomeFiltered(query) {
             const q = query.toLowerCase().trim();
             if (!q) {
-                renderHome(ataDatabase);
+                renderHome(getTopLevelDatabase());
                 return;
             }
 
             const filtered = {};
-            for (const [code, data] of Object.entries(ataDatabase)) {
+            for (const [code, data] of Object.entries(getTopLevelDatabase())) {
                 if (data.isMEL) {
                     // Search MEL item titles/numbers too; surface the MEL
                     // card itself if anything inside it matches.
@@ -4273,6 +4532,16 @@
                     continue;
                 }
 
+                if (data.isQuickFix) {
+                    // Skip the folder card itself here; matching ATA
+                    // chapters are surfaced directly below instead.
+                    continue;
+                }
+            }
+
+            // Surface matching ATA chapters directly (flat), same as
+            // before Quick Fix existed as a folder.
+            for (const [code, data] of Object.entries(quickFixDatabase)) {
                 const matchCode = code.toLowerCase().includes(q);
                 const matchTitle = data.title.toLowerCase().includes(q);
                 const matchIssues = data.issues.some(i => 
@@ -4283,6 +4552,7 @@
                     filtered[code] = data;
                 }
             }
+
             renderHome(filtered);
         }
     </script>
